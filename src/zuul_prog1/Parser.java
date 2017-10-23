@@ -1,3 +1,5 @@
+package zuul_prog1;
+
 import java.util.Scanner;
 
 /**
@@ -16,25 +18,25 @@ import java.util.Scanner;
  */
 class Parser {
     // Lieferant fuer eingegebene Befehle
-    private Scanner leser = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     /**
      * @return Der naechste Befehl des Benutzers.
      */
-    public Befehl liefereBefehl() {
-        Befehl befehl;
-        String eingabezeile; // fuer die gesamte Eingabezeile
+    public Command GetCommand() {
+        Command command;
+        String cmd; // fuer die gesamte Eingabezeile
 
         System.out.print("> "); // Eingabeaufforderung
-        eingabezeile = leser.nextLine();
-        String[] woerter = eingabezeile.split(" ");
+        cmd = scanner.nextLine();
+        String[] words = cmd.split(" ");
 
-        if (woerter.length >= 2) {
-            befehl = new Befehl(woerter[0], woerter[1]);
+        if (words.length >= 2) {
+            command = new Command(words[0], words[1]);
         } else {
-            befehl = new Befehl(woerter[0], null);
+            command = new Command(words[0], null);
         }
-        return befehl;
+        return command;
     }
 
 }

@@ -1,3 +1,5 @@
+package zuul_prog1;
+
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashMap;
@@ -17,10 +19,10 @@ import java.util.HashMap;
 
 class Raum 
 {
-    private final String beschreibung;
-	  private final ArrayList<Person> person = new ArrayList<Person>();
-	  private final ArrayList<Gegenstand> gegenstand = new ArrayList<Gegenstand>();
-    private final HashMap<String, Raum> ausgaenge = new HashMap<String, Raum>();
+    private final String description;
+    private final ArrayList<Person> persons = new ArrayList<Person>();
+    private final ArrayList<Item> items = new ArrayList<Item>();
+    private final HashMap<String, Raum> exists = new HashMap<String, Raum>();
 
     /**
      * Erzeuge einen Raum mit einer Beschreibung. Ein Raum
@@ -30,7 +32,7 @@ class Raum
      */
     public Raum(String beschreibung) 
     {
-        this.beschreibung = beschreibung; 
+        this.description = beschreibung; 
     }
 
     /**
@@ -38,9 +40,9 @@ class Raum
      * @param richtung Die Richtung, in der der Ausgang liegen soll
      * @param nachbar Der Raum, der ueber diesen Ausgang erreicht wird
      */
-    public void setzeAusgang(String richtung, Raum nachbar) 
+    public void SetExist(String richtung, Raum nachbar) 
     {
-        ausgaenge.put(richtung, nachbar);
+        exists.put(richtung, nachbar);
     }
 
     /**
@@ -48,9 +50,9 @@ class Raum
      * befindlich gelistet.
      * @param person Person, welche den Raum betritt
      */
-    public void betreten(Person person) 
+    public void Enter(Person person) 
     {
-        this.person.add(person);
+        this.persons.add(person);
     }
     
     /**
@@ -61,11 +63,17 @@ class Raum
      * @param nummer Nummer der Person
      * @return Person, die den Raum verlassen hat
      */
-    public Person verlassen(int nummer) 
+    public Person Leave(int nummer) 
     {
-    	boolean ungueltigerIndex = person.isEmpty() || 
-    			nummer > person.size()-1 || nummer < 0;
-        return ungueltigerIndex ? null : person.remove(nummer);
+    	boolean ungueltigerIndex = persons.isEmpty() || 
+    			nummer > persons.size()-1 || nummer < 0;
+        return ungueltigerIndex ? null : persons.remove(nummer);
+    }
+    
+    public Person GetPerson(int nummer){
+        boolean ungueltigerIndex = persons.isEmpty() || 
+    			nummer > persons.size()-1 || nummer < 0;
+        return ungueltigerIndex ? null : persons.get(nummer);
     }
     
     /**
@@ -73,9 +81,9 @@ class Raum
      * Raum befindlich gelistet. 
      * @param gegenstand Gegenstand, welcher in den Raum gelegt wird
      */
-    public void hineinlegen(Gegenstand gegenstand) 
+    public void InsertItem(Item gegenstand) 
     {
-        this.gegenstand.add(gegenstand);
+        this.items.add(gegenstand);
     }   
     
     /**
@@ -86,20 +94,20 @@ class Raum
      * @param nummer Nummer des Gegenstands
      * @return Gegenstand, der herausgenommen wurde
      */
-    public Gegenstand herausnehmen(int nummer) 
+    public Item RemoveItem(int nummer) 
     {
-    	boolean ungueltigerIndex = gegenstand.isEmpty() || 
-    			nummer > gegenstand.size()-1 || nummer < 0;
-        return ungueltigerIndex ? null : gegenstand.remove(nummer);
+    	boolean ungueltigerIndex = items.isEmpty() || 
+    			nummer > items.size()-1 || nummer < 0;
+        return ungueltigerIndex ? null : items.remove(nummer);
     }
     
     /**
      * @return Die kurze Beschreibung dieses Raums (die dem Konstruktor
      * uebergeben wurde).
      */
-    public String gibKurzbeschreibung()
+    public String GetDescription()
     {
-        return beschreibung;
+        return description;
     }
 
     /**
@@ -107,33 +115,33 @@ class Raum
      * Beschreibung des Rauminhaltes (Gegenstaende, Personen,...).
      * @return eine lange Beschreibung dieses Raumes.
      */
-    public String gibLangeBeschreibung()
+    public String GetLongDescription()
     {
-        return "Sie sind " + beschreibung + ".\n" 
-        		+ gibAusgaengeAlsString()
-        		+ gibGegenstaendeAlsString()
-        	    + gibPersonenAlsString();
+        return "Sie sind " + description + ".\n" 
+        		+ getExistsAsString()
+        		+ getItemsAsString()
+        	    + getPersonsAsString();
     }
 
-    private String gibGegenstaendeAlsString() {
+    private String getItemsAsString() {
     	String text = "Keine Gegenstaende im Raum.\n";
-    	if(gegenstand.size()>0) {
+    	if(items.size()>0) {
 	    	int counter = 0;
 	    	text = "Gegenstaende im Raum:\n";
-	    	for( Gegenstand objekt : gegenstand) {
-	    		text += " " + counter++ + ": " + objekt.gibName() + "\n";
+	    	for( Item objekt : items) {
+	    		text += " " + counter++ + ": " + objekt.GetName() + "\n";
 	    	}
     	}
     	return text;
     }
 
-    private String gibPersonenAlsString() {
+    private String getPersonsAsString() {
 		String text = "Keine Personen im Raum.\n";
-    	if(person.size()>0){
+    	if(persons.size()>0){
     		text="Personen im Raum:\n";
         	int counter = 0;
-        	for( Person objekt : person) {
-        		text += " " + counter++ + ": " + objekt.gibName() + "\n";
+        	for( Person objekt : persons) {
+        		text += " " + counter++ + ": " + objekt.GetName() + "\n";
         	}
     	}    	
     	return text;
@@ -145,10 +153,10 @@ class Raum
      * "Ausgaenge: north west".
      * @return eine Beschreibung der Ausgaenge dieses Raumes.
      */
-    private String gibAusgaengeAlsString()
+    private String getExistsAsString()
     {
         String ergebnis = "Ausgaenge:";
-        Set<String> keys = ausgaenge.keySet();
+        Set<String> keys = exists.keySet();
         for(String ausgang : keys)
             ergebnis += " " + ausgang;
         return ergebnis + "\n";
@@ -161,9 +169,9 @@ class Raum
      * @param richtung die Richtung, in die gegangen werden soll.
      * @return den Raum in der angegebenen Richtung.
      */
-    public Raum gibAusgang(String richtung) 
+    public Raum GetExist(String richtung) 
     {
-        return ausgaenge.get(richtung);
+        return exists.get(richtung);
     }
 }
 
