@@ -15,7 +15,7 @@ public class Zuul_Prog1 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {         
+    public static void main(String[] args) {        
       View g = new View();
       g.setContentPane(g.getContentPane());
       g.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,7 +23,7 @@ public class Zuul_Prog1 {
      
       g.setVisible(true);
      
-      Game s = new Game();  
+        
     }
     
 }

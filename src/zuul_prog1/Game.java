@@ -24,13 +24,13 @@ import java.util.HashMap;
 
 public class Game {
 	private Parser parser;
-	private Raum currentLocation;
-	private Person player;
+	public Room currentLocation;
+	public Person player;
 
 	/**
 	 * Erzeuge ein Spiel und initialisiere die Spielwelt.
 	 */
-	public Game() {
+	public Game() {                
 		generateWorld();
 		parser = new Parser();
                 start();
@@ -42,7 +42,7 @@ public class Game {
 	 */
 	private void generateWorld() {
 		player = new Person("Captain Kirk", 220, 10, 100, null, 83);
-		ArrayList<Raum> raeume = createRooms();
+		ArrayList<Room> raeume = createRooms();
 		fillWithPersons(raeume);
 		fillWithItems(raeume);
 	}
@@ -52,28 +52,28 @@ public class Game {
 	 * 
 	 * @return Die angelegten Raeume
 	 */
-	private ArrayList<Raum> createRooms() {
-		HashMap<String, Raum> raum = new HashMap<String, Raum>();
+	private ArrayList<Room> createRooms() {
+		HashMap<String, Room> raum = new HashMap<String, Room>();
 		// die Raeume erzeugen
-		raum.put("draussen", new Raum("vor dem Haupteingang der Universitaet"));
-		raum.put("hoersaal", new Raum("in einem Vorlesungssaal"));
-		raum.put("cafeteria", new Raum("in der Cafeteria der Uni"));
-		raum.put("labor", new Raum("in einem Rechnerraum"));
-		raum.put("buero", new Raum("im Verwaltungsbuero der Informatik"));
+		raum.put("draussen", new Room("Vor dem Haupteingang der Universitaet"));
+		raum.put("hoersaal", new Room("In einem Vorlesungssaal"));
+		raum.put("cafeteria", new Room("In der Cafeteria der Uni"));
+		raum.put("labor", new Room("In einem Rechnerraum"));
+		raum.put("buero", new Room("Im Verwaltungsbuero der Informatik"));
 		// die Ausgaenge initialisieren
-		raum.get("draussen").SetExist("osten", raum.get("hoersaal"));
-		raum.get("draussen").SetExist("sueden", raum.get("labor"));
-		raum.get("draussen").SetExist("westen", raum.get("cafeteria"));
-		raum.get("hoersaal").SetExist("westen", raum.get("draussen"));
-		raum.get("cafeteria").SetExist("osten", raum.get("draussen"));
-		raum.get("labor").SetExist("norden", raum.get("draussen"));
-		raum.get("labor").SetExist("osten", raum.get("buero"));
-		raum.get("buero").SetExist("westen", raum.get("labor"));
+		raum.get("draussen").SetExist(CardinalPoints.East, raum.get("hoersaal"));
+		raum.get("draussen").SetExist(CardinalPoints.South, raum.get("labor"));
+		raum.get("draussen").SetExist(CardinalPoints.West, raum.get("cafeteria"));
+		raum.get("hoersaal").SetExist(CardinalPoints.West, raum.get("draussen"));
+		raum.get("cafeteria").SetExist(CardinalPoints.East, raum.get("draussen"));
+		raum.get("labor").SetExist(CardinalPoints.North, raum.get("draussen"));
+		raum.get("labor").SetExist(CardinalPoints.East, raum.get("buero"));
+		raum.get("buero").SetExist(CardinalPoints.West, raum.get("labor"));
 
 		// Startraum
 		currentLocation = raum.get("draussen");
-		ArrayList<Raum> raumliste = new ArrayList<Raum>();
-		for (Raum r : raum.values()) {
+		ArrayList<Room> raumliste = new ArrayList<Room>();
+		for (Room r : raum.values()) {
 			raumliste.add(r);
 		}
 		return raumliste;
@@ -86,7 +86,7 @@ public class Game {
 	 * @param raum
 	 *            Liste der Raeume
 	 */
-	private void fillWithPersons(ArrayList<Raum> raum) {
+	private void fillWithPersons(ArrayList<Room> raum) {
 		ArrayList<Person> person = new ArrayList<Person>();
 		person.add(new Person("Dr. Hans Muster", 40, 110, 2, null, 82));
 		person.add(new Person("Peter Stark", 80, 200, 20, null, 87));
@@ -109,7 +109,7 @@ public class Game {
 	 * @param raum
 	 *            Liste der Raeume
 	 */
-	private void fillWithItems(ArrayList<Raum> raum) {
+	private void fillWithItems(ArrayList<Room> raum) {
 		ArrayList<Item> gegenstand = new ArrayList<Item>();
 		gegenstand.add(new Item("Sehr schwerer Laserpointer", 1));
 		gegenstand.add(new Item("Beamer", 12));
@@ -139,11 +139,11 @@ public class Game {
 
 		// Die Hauptschleife. Hier lesen wir wiederholt Befehle ein
 		// und fuehren sie aus, bis das Spiel beendet wird.
-		boolean beendet = false;
-		while (!beendet) {
+		//boolean beendet = false;
+		/*while (!beendet) {
 			Command befehl = parser.GetCommand();
 			beendet = processCommand(befehl);
-		}
+		}*/
 		System.out.println("Danke fuer dieses Spiel. Auf Wiedersehen.");
 	}
 
@@ -184,7 +184,7 @@ public class Game {
 			getHelp();
 			break;
 		case GEHE:
-			changeRoom(befehl);
+			//changeRoom(befehl);
 			break;
 		case BEENDEN:
 			moechteBeenden = shutdown(befehl);
@@ -216,7 +216,7 @@ public class Game {
 	/**
 	 * 
 	 */
-	private void look() {
+	public void look() {
 		System.out.println("Sie sind: " + player.GetName());
 		System.out.println(currentLocation.GetLongDescription());
 	}
@@ -229,7 +229,7 @@ public class Game {
 	 * 
 	 * @param befehl Der auszufuehrende Befehl
 	 */
-	private void take(Command befehl) {
+	public void take(Command befehl) {
 		if (befehl.GotSecondWord()) {
 			int kennummer = Integer.parseInt(befehl.GetSecondWord());
 			takeItem(kennummer);
@@ -245,7 +245,7 @@ public class Game {
 	 * 
 	 * @param nr Nummer des Gegenstands
 	 */
-	private void takeItem(int nr) {
+	public void takeItem(int nr) {
 		Item gegenstand = currentLocation.RemoveItem(nr);
 		if (gegenstand == null) {
 			System.out.println("Es gibt keinen Gegenstand mit dieser Nummer: "
@@ -283,7 +283,7 @@ public class Game {
 	 * @param befehl
 	 *            Der auszufuehrende Befehl
 	 */
-	private void control(Command befehl) {
+	public void control(Command befehl) {
 		if (befehl.GotSecondWord()) {
 			int nummer = Integer.parseInt(befehl.GetSecondWord());
 			controlPerson(nummer);			
@@ -299,7 +299,7 @@ public class Game {
 	 * 
 	 * @param nummer Nummer der Person
 	 */
-	private void controlPerson(int nummer) {
+	public void controlPerson(int nummer) {
 		Person person = currentLocation.Leave(nummer);
 		if (person == null) {
 			System.out.println("Es gibt keine Person mit Nummer " + nummer);
@@ -314,7 +314,7 @@ public class Game {
 	 * Gib Hilfsinformationen aus. Hier geben wir eine etwas alberne und unklare
 	 * Beschreibung aus, sowie eine Liste der Befehlswoerter.
 	 */
-	private void getHelp() {
+	public void getHelp() {
 		System.out.println("Sie haben sich verlaufen. Sie sind allein.");
 		System.out.println("Sie irren auf dem Unigelaende herum.");
 		System.out.println();
@@ -333,16 +333,16 @@ public class Game {
 	 * Versuche, in eine Richtung zu gehen. Wenn es einen Ausgang gibt, wechsele
 	 * in den neuen Raum, ansonsten gib eine Fehlermeldung aus.
 	 */
-	private void changeRoom(Command befehl) {
-		if (!befehl.GotSecondWord()) {
+	public void changeRoom(CardinalPoints richtung) {
+		/*if (!befehl.GotSecondWord()) {
 			// Gibt es kein zweites Wort, wissen wir nicht, wohin...
 			System.out.println("Wohin moechten Sie gehen?");
 			return;
-		}
+		}*/
 
-		String richtung = befehl.GetSecondWord();
+		//String richtung = befehl.GetSecondWord();
 		// Wir versuchen, den Raum zu verlassen.
-		Raum naechsterRaum = currentLocation.GetExist(richtung);
+		Room naechsterRaum = currentLocation.GetExist(richtung);
 		if (naechsterRaum == null) {
 			System.out.println("Dort ist keine Tuer!");
 		} else {
@@ -357,7 +357,7 @@ public class Game {
 	 * 
 	 * @return 'true', wenn der Befehl das Spiel beendet, 'false' sonst.
 	 */
-	private boolean shutdown(Command befehl) {
+	public boolean shutdown(Command befehl) {
 		if (befehl.GotSecondWord()) {
 			System.out.println("Was soll beendet werden?");
 			return false;
@@ -366,7 +366,7 @@ public class Game {
 		}
 	}
 
-        private void kill(Command befehl) {
+        public void kill(Command befehl) {
             if (befehl.GotSecondWord()) {
 	      int nummer = Integer.parseInt(befehl.GetSecondWord());
               killPerson(nummer);			
@@ -376,7 +376,7 @@ public class Game {
 	    }
         }
         
-        private void killPerson(int nr) {
+        public void killPerson(int nr) {
             Person person = currentLocation.GetPerson(nr);
 		if (person == null) {
 			System.out.println("Es gibt keine Person mit Nummer " + nr);
@@ -399,14 +399,14 @@ public class Game {
 		}
         }
 
-        private void showBackpack() {
+        public void showBackpack() {
             System.out.println("Dein Rucksack enthält folgendes: ");
             for(Item item : player.GetBackpack()){
                 System.out.println(""+ item.GetName());
             }
         }
 
-        private void takeAsWeapon(String command) {
+        public void takeAsWeapon(String command) {
             try{
 		int nummer = Integer.parseInt(command);
 		Item item = player.RemoveBackpackItem(nummer);

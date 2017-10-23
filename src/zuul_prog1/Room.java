@@ -1,5 +1,6 @@
 package zuul_prog1;
 
+import java.awt.List;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashMap;
@@ -17,12 +18,12 @@ import java.util.HashMap;
  * @version 1.0
  */
 
-class Raum 
+class Room 
 {
     private final String description;
     private final ArrayList<Person> persons = new ArrayList<Person>();
     private final ArrayList<Item> items = new ArrayList<Item>();
-    private final HashMap<String, Raum> exists = new HashMap<String, Raum>();
+    public final HashMap<CardinalPoints, Room> exits = new HashMap<CardinalPoints, Room>();
 
     /**
      * Erzeuge einen Raum mit einer Beschreibung. Ein Raum
@@ -30,7 +31,7 @@ class Raum
      * @param beschreibung enthaelt eine Beschreibung in der Form
      *        "in einer Kueche" oder "auf einem Sportplatz".
      */
-    public Raum(String beschreibung) 
+    public Room(String beschreibung) 
     {
         this.description = beschreibung; 
     }
@@ -40,10 +41,11 @@ class Raum
      * @param richtung Die Richtung, in der der Ausgang liegen soll
      * @param nachbar Der Raum, der ueber diesen Ausgang erreicht wird
      */
-    public void SetExist(String richtung, Raum nachbar) 
+    public void SetExist(CardinalPoints richtung, Room nachbar) 
     {
-        exists.put(richtung, nachbar);
+        exits.put(richtung, nachbar);
     }
+    
 
     /**
      * Die Person betritt den Raum und wird fortan als im Raum
@@ -74,6 +76,14 @@ class Raum
         boolean ungueltigerIndex = persons.isEmpty() || 
     			nummer > persons.size()-1 || nummer < 0;
         return ungueltigerIndex ? null : persons.get(nummer);
+    }
+    
+    public ArrayList<Person> GetPersons(){
+        return persons;
+    }
+    
+     public ArrayList<Item> GetItems(){
+        return items;
     }
     
     /**
@@ -156,8 +166,8 @@ class Raum
     private String getExistsAsString()
     {
         String ergebnis = "Ausgaenge:";
-        Set<String> keys = exists.keySet();
-        for(String ausgang : keys)
+        Set<CardinalPoints> keys = exits.keySet();
+        for(CardinalPoints ausgang : keys)
             ergebnis += " " + ausgang;
         return ergebnis + "\n";
     }
@@ -169,9 +179,9 @@ class Raum
      * @param richtung die Richtung, in die gegangen werden soll.
      * @return den Raum in der angegebenen Richtung.
      */
-    public Raum GetExist(String richtung) 
+    public Room GetExist(CardinalPoints richtung) 
     {
-        return exists.get(richtung);
+        return exits.get(richtung);
     }
 }
 
