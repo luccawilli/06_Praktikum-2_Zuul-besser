@@ -7,11 +7,12 @@ package zuul_prog1;
 
 import java.util.HashMap;
 import javax.swing.DefaultListModel;
+import javax.swing.JPopupMenu;
 /**
  *
  * @author Lucca
  */
-public class View extends javax.swing.JFrame {
+public class View extends javax.swing.JFrame implements WriteDown {
 
     private Game game;
     
@@ -19,10 +20,11 @@ public class View extends javax.swing.JFrame {
      * Creates new form View
      */
     public View() {
-        initComponents();        
-        game = new Game();
+        initComponents();
+        game = new Game(this);
         
-        UpdateWalkButtons();
+        UpdateLocation();
+        UpdatePlayer();
     }
 
     /**
@@ -66,6 +68,11 @@ public class View extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        playerNameLabel = new javax.swing.JLabel();
+        playerCapacityLabel = new javax.swing.JLabel();
+        playerDamageLabel = new javax.swing.JLabel();
+        playerWeaponLabel = new javax.swing.JLabel();
+        playerLifepointsLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,6 +80,7 @@ public class View extends javax.swing.JFrame {
 
         outputArea.setColumns(20);
         outputArea.setRows(5);
+        outputArea.setFocusable(false);
         jScrollPane2.setViewportView(outputArea);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -93,6 +101,11 @@ public class View extends javax.swing.JFrame {
         jScrollPane3.setViewportView(personsList);
 
         itemsList.setModel(new DefaultListModel());
+        itemsList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                itemsListMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(itemsList);
 
         jLabel1.setText("Gegenstände:");
@@ -173,10 +186,10 @@ public class View extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(roomLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(roomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(roomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -191,7 +204,7 @@ public class View extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -238,16 +251,15 @@ public class View extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
-                        .addComponent(northButton))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(southButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addComponent(westButton)
                         .addGap(95, 95, 95)
-                        .addComponent(eastButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(eastButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(124, 124, 124)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(southButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(northButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -289,6 +301,16 @@ public class View extends javax.swing.JFrame {
 
         jLabel9.setText("Lebenspunkte:");
 
+        playerNameLabel.setText("jLabel10");
+
+        playerCapacityLabel.setText("jLabel11");
+
+        playerDamageLabel.setText("jLabel12");
+
+        playerWeaponLabel.setText("jLabel13");
+
+        playerLifepointsLabel.setText("jLabel14");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -298,12 +320,19 @@ public class View extends javax.swing.JFrame {
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel7)
+                    .addComponent(jLabel9)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel9))
-                .addGap(433, 433, 433))
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(playerLifepointsLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(playerWeaponLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(playerDamageLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(playerCapacityLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(playerNameLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(359, 359, 359))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -312,15 +341,25 @@ public class View extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(playerNameLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(playerCapacityLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(playerDamageLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel8)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(playerWeaponLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel9)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(playerLifepointsLabel))
                         .addGap(0, 19, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -368,15 +407,11 @@ public class View extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -403,17 +438,17 @@ public class View extends javax.swing.JFrame {
 
     private void northButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_northButtonActionPerformed
         game.changeRoom(CardinalPoints.North);        
-        UpdateWalkButtons();
+        UpdateLocation();
     }//GEN-LAST:event_northButtonActionPerformed
 
     private void southButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_southButtonActionPerformed
         game.changeRoom(CardinalPoints.South);        
-        UpdateWalkButtons();
+        UpdateLocation();
     }//GEN-LAST:event_southButtonActionPerformed
 
     private void eastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eastButtonActionPerformed
         game.changeRoom(CardinalPoints.East);
-        UpdateWalkButtons();
+        UpdateLocation();
     }//GEN-LAST:event_eastButtonActionPerformed
 
     private void roomPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roomPanelMouseClicked
@@ -424,14 +459,24 @@ public class View extends javax.swing.JFrame {
 
     private void westButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_westButtonActionPerformed
         game.changeRoom(CardinalPoints.West);
-        UpdateWalkButtons();
+        UpdateLocation();
     }//GEN-LAST:event_westButtonActionPerformed
 
-    public void WriteToOutput(String addText){
-        outputArea.append(addText + "\n");        
+    private void itemsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemsListMouseClicked
+        if(evt.getButton() == 2){
+            JPopupMenu popup = new JPopupMenu();
+            popup.setVisible(true);
+            popup.setLocation(evt.getPoint());
+            popup.firePropertyChange("visible", Boolean.TRUE, Boolean.FALSE);
+        }
+    }//GEN-LAST:event_itemsListMouseClicked
+
+    @Override
+    public void writeDown(String text) {
+        outputArea.setText(text + "\n");
     }
     
-    private void UpdateWalkButtons(){
+    private void UpdateLocation(){
         HashMap<CardinalPoints, Room> k = game.currentLocation.exits;
         northButton.setEnabled(k.keySet().contains(CardinalPoints.North));
         eastButton.setEnabled(k.keySet().contains(CardinalPoints.East));
@@ -456,6 +501,22 @@ public class View extends javax.swing.JFrame {
         personsList.setModel(dPersonListModel);
         
         roomLabel.setText(game.currentLocation.GetDescription());
+    }
+    
+    private void UpdatePlayer(){
+        if(game != null && game.player != null){
+            playerNameLabel.setText(game.player.GetName());
+            playerCapacityLabel.setText(game.player.GetCapacity()+ " kg");
+            playerLifepointsLabel.setText(game.player.GetLifePoints()+ "");
+            playerDamageLabel.setText(game.player.GetDamage()+ "");
+            if(game.player.GetWeapon() != null){
+                playerWeaponLabel.setText(game.player.GetWeapon().GetName());
+            }
+            else{
+                playerWeaponLabel.setText("");
+            }
+        }
+      
     }
     
     /**
@@ -522,6 +583,11 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JButton northButton;
     private javax.swing.JTextArea outputArea;
     private javax.swing.JList personsList;
+    private javax.swing.JLabel playerCapacityLabel;
+    private javax.swing.JLabel playerDamageLabel;
+    private javax.swing.JLabel playerLifepointsLabel;
+    private javax.swing.JLabel playerNameLabel;
+    private javax.swing.JLabel playerWeaponLabel;
     private javax.swing.JLabel roomLabel;
     private javax.swing.JPanel roomPanel;
     private javax.swing.JButton southButton;
