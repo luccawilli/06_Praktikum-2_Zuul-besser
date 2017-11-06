@@ -9,6 +9,6 @@ package zuul_prog1;
  *
  * @author Lucca
  */
-public interface WriteDown {
+public interface IGame {
     void writeDown(String text);
 }

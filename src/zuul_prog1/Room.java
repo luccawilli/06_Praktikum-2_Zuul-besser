@@ -165,10 +165,10 @@ class Room
      */
     private String getExistsAsString()
     {
-        String ergebnis = "Ausgaenge:";
+        String ergebnis = "Ausgaenge: ";
         Set<CardinalPoints> keys = exits.keySet();
         for(CardinalPoints ausgang : keys)
-            ergebnis += " " + ausgang;
+            ergebnis += ausgang + ", " ;
         return ergebnis + "\n";
     }
 

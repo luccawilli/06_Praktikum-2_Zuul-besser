@@ -1,6 +1,5 @@
 package zuul_prog1;
 
-import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -28,12 +27,12 @@ public class Game {
     private Parser parser;
     public Room currentLocation;
     public Person player;
-    private List<WriteDown> listeners = new ArrayList<WriteDown>();
+    private List<IGame> listeners = new ArrayList<IGame>();
 
     /**
      * Erzeuge ein Spiel und initialisiere die Spielwelt.
      */
-    public Game(WriteDown writeDownListener) {
+    public Game(IGame writeDownListener) {
         listeners.add(writeDownListener);
         generateWorld();
         parser = new Parser();
@@ -42,8 +41,8 @@ public class Game {
 
     public void writeDown(String text) {
         // Notify everybody that may be interested.
-        for (WriteDown hl : listeners) {
-            hl.writeDown(text);
+        for (IGame hl : listeners) {
+            hl.writeDown(text);            
         }
     }
 
@@ -144,79 +143,11 @@ public class Game {
      * Schleife.
      */
     private void start() {
-        startText();
-
-		// Die Hauptschleife. Hier lesen wir wiederholt Befehle ein
-        // und fuehren sie aus, bis das Spiel beendet wird.
-        //boolean beendet = false;
-		/*while (!beendet) {
-         Command befehl = parser.GetCommand();
-         beendet = processCommand(befehl);
-         }*/
-        writeDown("Danke fuer dieses Spiel. Auf Wiedersehen.");
-    }
-
-    /**
-     * Einen Begruessungstext fuer den Spieler ausgeben.
-     */
-    private void startText() {
-        writeDown("\n");
-        writeDown("Willkommen zu Zuul!");
-        writeDown("Zuul ist ein neues, unglaublich langweiliges Spiel.");
-        writeDown("Tippen sie '" + Commands.HILFE
-                + "', wenn Sie Hilfe brauchen.");
-        writeDown("\n");
-        writeDown(currentLocation.GetLongDescription());
-    }
-
-    /**
-     * Verarbeite einen gegebenen Befehl (fuehre ihn aus).
-     *
-     * @param befehl Der zu verarbeitende Befehl.
-     * @return 'true', wenn der Befehl das Spiel beendet, 'false' sonst.
-     */
-    private boolean processCommand(Command befehl) {
-        boolean moechteBeenden = false;
-
-        Commands befehlswort = befehl.GetCommand();
-
-        switch (befehlswort) {
-            case UNBEKANNT:
-                writeDown("Ich weiss nicht, was Sie meinen...");
-                break;
-            case UMSEHEN:
-                look();
-                break;
-            case HILFE:
-                getHelp();
-                break;
-            case GEHE:
-                //changeRoom(befehl);
-                break;
-            case BEENDEN:
-                moechteBeenden = shutdown(befehl);
-                break;
-            case UEBERNIMM:
-                control(befehl);
-                break;
-            case NIMM:
-                take(befehl);
-                break;
-            case TOETEN:
-                kill(befehl);
-                break;
-            case RUCKSACK:
-                if (befehl.GotSecondWord()) {
-                    takeAsWeapon(befehl.GetSecondWord());
-                } else {
-                    showBackpack();
-                }
-                break;
-            default:
-                writeDown("Befehlswort ohne zugehoerige Aktion.");
-                break;
-        }
-        return moechteBeenden;
+        writeDown("\n"
+        +"Willkommen zu Zuul! \n"
+        +"Zuul ist ein neues, unglaublich langweiliges Spiel. \n"
+        +"\n"
+        +currentLocation.GetLongDescription());
     }
 
     /**
@@ -226,25 +157,7 @@ public class Game {
         writeDown("Sie sind: " + player.GetName());
         writeDown(currentLocation.GetLongDescription());
     }
-
-    /**
-     * Packt den spezifizierten Gegenstand in den Rucksack des Spielers und
-     * entfernt ihn aus dem aktuellen Raum.
-     *
-     * Falls der bezeichnete Gegenstand nicht vorhanden ist, aendert sich
-     * nichts.
-     *
-     * @param befehl Der auszufuehrende Befehl
-     */
-    public void take(Command befehl) {
-        if (befehl.GotSecondWord()) {
-            int kennummer = Integer.parseInt(befehl.GetSecondWord());
-            takeItem(kennummer);
-        } else {
-            writeDown("Geben Sie die Nummer des Gegenstands an.");
-        }
-    }
-
+    
     /**
      * Packt den Gegenstand mit der gegebenen Nummer, falls vorhanden, in den
      * Rucksack des Spielers und entfernt ihn aus dem aktuellen Raum.
@@ -261,7 +174,7 @@ public class Game {
                 writeDown("Gegenstand eingepackt: " + gegenstand.GetName());
                 player.GetBackpack().add(gegenstand);
             } else {
-                writeDown("Gegenstand konnte nicht eingepackt werden.");
+                writeDown("Gegenstand konnte nicht eingepackt werden, da er zu schwer ist.");
                 currentLocation.InsertItem(gegenstand);
             }
         }
@@ -282,23 +195,6 @@ public class Game {
     }
 
     /**
-     * Uebernimmt die Kontrolle der spezifizierten Person. Der Spieler steuert
-     * anschliessend neu diese Person.
-     *
-     * Falls die bezeichnete Person nicht vorhanden ist, aendert sich nichts.
-     *
-     * @param befehl Der auszufuehrende Befehl
-     */
-    public void control(Command befehl) {
-        if (befehl.GotSecondWord()) {
-            int nummer = Integer.parseInt(befehl.GetSecondWord());
-            controlPerson(nummer);
-        } else {
-            writeDown("Geben Sie die Nummer der Person an.");
-        }
-    }
-
-    /**
      * Uebernimmt, falls vorhanden, die Kontrolle der Person mit der
      * spezifizierten Nummer.
      *
@@ -314,29 +210,11 @@ public class Game {
             writeDown("Sie kontrollieren nun " + player.GetName());
         }
     }
-
-    /**
-     * Gib Hilfsinformationen aus. Hier geben wir eine etwas alberne und unklare
-     * Beschreibung aus, sowie eine Liste der Befehlswoerter.
-     */
-    public void getHelp() {
-        writeDown("Sie haben sich verlaufen. Sie sind allein.");
-        writeDown("Sie irren auf dem Unigelaende herum.");
-        writeDown("\n");
-        getCommands();
-    }
-
-    /**
-     * Gibt eine Liste der vorhandenen Befehlswoerter aus.
-     */
-    private void getCommands() {
-        writeDown("Ihnen stehen folgende Befehle zur Verfuegung:");
-        writeDown(Commands.GetCommandsText());
-    }
-
+    
     /**
      * Versuche, in eine Richtung zu gehen. Wenn es einen Ausgang gibt, wechsele
      * in den neuen Raum, ansonsten gib eine Fehlermeldung aus.
+     * @param richtung
      */
     public void changeRoom(CardinalPoints richtung) {
         /*if (!befehl.GotSecondWord()) {
@@ -357,29 +235,9 @@ public class Game {
     }
 
     /**
-     * Der Befehl zum Beenden wurde eingegeben. Ueberpruefe den Rest des
-     * Befehls, ob das Spiel wirklich beendet werden soll.
-     *
-     * @return 'true', wenn der Befehl das Spiel beendet, 'false' sonst.
-     */
-    public boolean shutdown(Command befehl) {
-        if (befehl.GotSecondWord()) {
-            writeDown("Was soll beendet werden?");
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public void kill(Command befehl) {
-        if (befehl.GotSecondWord()) {
-            int nummer = Integer.parseInt(befehl.GetSecondWord());
-            killPerson(nummer);
-        } else {
-            writeDown("Geben Sie die Nummer der Person an.");
-        }
-    }
-
+    *
+     * @param nr
+    */
     public void killPerson(int nr) {
         Person person = currentLocation.GetPerson(nr);
         if (person == null) {
@@ -403,17 +261,13 @@ public class Game {
         }
     }
 
-    public void showBackpack() {
-        writeDown("Dein Rucksack enthält folgendes: ");
-        for (Item item : player.GetBackpack()) {
-            writeDown("" + item.GetName());
-        }
-    }
-
-    public void takeAsWeapon(String command) {
-        try {
-            int nummer = Integer.parseInt(command);
-            Item item = player.RemoveBackpackItem(nummer);
+    /**
+     *
+     * @param nr
+     */
+    public void takeAsWeapon(int nr) {
+        try {            
+            Item item = player.RemoveBackpackItem(nr);
             if (player.GetWeapon() != null) {
                 player.GetBackpack().add(player.GetWeapon());
                 writeDown("Der Gegenstand " + item.GetName() + " wurde aus deiner Hand entfernt und in deinen Rucksack gelegt.");
