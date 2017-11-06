@@ -5,14 +5,21 @@
  */
 package zuul_prog1;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Map;
+import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 /**
  *
  * @author Lucca
  */
-public class View extends javax.swing.JFrame implements WriteDown {
+public class View extends javax.swing.JFrame implements IGame {
 
     private Game game;
     
@@ -21,8 +28,9 @@ public class View extends javax.swing.JFrame implements WriteDown {
      */
     public View() {
         initComponents();
-        game = new Game(this);
+        game = new Game(this);        
         
+        InitPopups();
         UpdateLocation();
         UpdatePlayer();
     }
@@ -75,23 +83,28 @@ public class View extends javax.swing.JFrame implements WriteDown {
         playerLifepointsLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1216, 500));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         outputArea.setColumns(20);
         outputArea.setRows(5);
         outputArea.setFocusable(false);
+        outputArea.setMaximumSize(new java.awt.Dimension(164, 94));
+        outputArea.setMinimumSize(new java.awt.Dimension(164, 94));
         jScrollPane2.setViewportView(outputArea);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -181,7 +194,7 @@ public class View extends javax.swing.JFrame implements WriteDown {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(roomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(roomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,18 +209,19 @@ public class View extends javax.swing.JFrame implements WriteDown {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel4.setMinimumSize(new java.awt.Dimension(322, 530));
 
         itemsList.setModel(new DefaultListModel());
         jScrollPane1.setViewportView(inventoryList);
@@ -260,7 +274,7 @@ public class View extends javax.swing.JFrame implements WriteDown {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(southButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(northButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,12 +384,14 @@ public class View extends javax.swing.JFrame implements WriteDown {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 300, Short.MAX_VALUE)
-                    .addComponent(jLabel5)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -388,7 +404,7 @@ public class View extends javax.swing.JFrame implements WriteDown {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -401,17 +417,17 @@ public class View extends javax.swing.JFrame implements WriteDown {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -463,12 +479,7 @@ public class View extends javax.swing.JFrame implements WriteDown {
     }//GEN-LAST:event_westButtonActionPerformed
 
     private void itemsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemsListMouseClicked
-        if(evt.getButton() == 2){
-            JPopupMenu popup = new JPopupMenu();
-            popup.setVisible(true);
-            popup.setLocation(evt.getPoint());
-            popup.firePropertyChange("visible", Boolean.TRUE, Boolean.FALSE);
-        }
+
     }//GEN-LAST:event_itemsListMouseClicked
 
     @Override
@@ -484,6 +495,14 @@ public class View extends javax.swing.JFrame implements WriteDown {
         southButton.setEnabled(k.keySet().contains(CardinalPoints.South));
         personsList.removeAll();
         
+        
+        UpdateItems();
+        UpdatePersons();
+        
+        roomLabel.setText(game.currentLocation.GetDescription());
+    }
+    
+    private void UpdateItems(){
         DefaultListModel dItemListModel = new DefaultListModel();
         int i = 0;
         for(Item p : game.currentLocation.GetItems()){
@@ -491,16 +510,16 @@ public class View extends javax.swing.JFrame implements WriteDown {
             i++;
         }
         itemsList.setModel(dItemListModel);
-        
+    }
+    
+    private void UpdatePersons(){
         DefaultListModel dPersonListModel = new DefaultListModel();
-        i = 0;
+        int i = 0;
         for(Person p : game.currentLocation.GetPersons()){
             dPersonListModel.add(i, p.GetName());
             i++;
         }
         personsList.setModel(dPersonListModel);
-        
-        roomLabel.setText(game.currentLocation.GetDescription());
     }
     
     private void UpdatePlayer(){
@@ -517,6 +536,109 @@ public class View extends javax.swing.JFrame implements WriteDown {
             }
         }
       
+    }
+    
+    private void UpdateBackpack(){
+        DefaultListModel dItemListModel = new DefaultListModel();
+        int i = 0;
+        for(Item p : game.player.GetBackpack()){
+            dItemListModel.add(i, p.GetName());
+            i++;
+        }
+        inventoryList.setModel(dItemListModel);
+    }
+        
+    private void InitPopups(){        
+        JPopupMenu popup = new JPopupMenu();
+        HashMap<String,AbstractAction> itemsActionsDict = new HashMap<String,AbstractAction>();
+        itemsActionsDict.put("Nimm", new AbstractAction("take") {
+                public void actionPerformed(ActionEvent e) {
+                    JMenuItem a = ((JMenuItem) e.getSource());
+                    int i = itemsList.getSelectedIndex();
+                    if(i != -1){
+                        game.takeItem(i);
+                        UpdateBackpack();
+                        UpdateItems();
+                    }                    
+                }
+            });
+        
+        for(String iA : itemsActionsDict.keySet()){
+            JMenuItem a = new JMenuItem(itemsActionsDict.get(iA));
+            a.setText(iA);            
+            popup.add(a);
+        }
+        itemsList.setComponentPopupMenu(popup);
+        itemsList.setInheritsPopupMenu(true);
+        
+        itemsActionsDict.clear();
+        itemsActionsDict.put("Übernimm", new AbstractAction("overtake") {
+                public void actionPerformed(ActionEvent e) {
+                    JMenuItem a = ((JMenuItem) e.getSource());
+                    int i = personsList.getSelectedIndex();
+                    if(i != -1){
+                        game.controlPerson(i);
+                        UpdatePlayer();
+                        UpdateBackpack();
+                        UpdatePersons();
+                    }                    
+                }
+            });
+        itemsActionsDict.put("Töten", new AbstractAction("kill") {
+                public void actionPerformed(ActionEvent e) {
+                    JMenuItem a = ((JMenuItem) e.getSource());
+                    int i = personsList.getSelectedIndex();
+                    if(i != -1){
+                        game.killPerson(i);
+                        UpdatePlayer();
+                        UpdateItems();
+                        UpdateBackpack();
+                        UpdatePersons();
+                    }                    
+                }
+            });
+        
+        popup = new JPopupMenu();        
+        for(String pA : itemsActionsDict.keySet()){
+            JMenuItem a = new JMenuItem(itemsActionsDict.get(pA));
+            a.setText(pA);
+            popup.add(a);
+        }
+        personsList.setComponentPopupMenu(popup);
+        personsList.setInheritsPopupMenu(true);
+        
+        
+        itemsActionsDict.clear();
+        itemsActionsDict.put("Ablegen", new AbstractAction("discard") {
+                public void actionPerformed(ActionEvent e) {
+                    JMenuItem a = ((JMenuItem) e.getSource());
+                    int i = inventoryList.getSelectedIndex();
+                    /*if(i != -1){
+                        game.takeItem(i);
+                        UpdateBackpack();
+                        UpdateItems();
+                    } */                  
+                }
+            });
+        itemsActionsDict.put("Waffe", new AbstractAction("takeAsWeapon") {
+                public void actionPerformed(ActionEvent e) {
+                    JMenuItem a = ((JMenuItem) e.getSource());
+                    int i = inventoryList.getSelectedIndex();
+                    if(i != -1){
+                        game.takeAsWeapon(i);
+                        UpdateBackpack();
+                        UpdatePlayer();
+                    }                    
+                }
+            });
+        popup = new JPopupMenu();        
+        for(String iA : itemsActionsDict.keySet()){
+            JMenuItem a = new JMenuItem(itemsActionsDict.get(iA));
+            a.setText(iA);
+            popup.add(a);
+        }
+        inventoryList.setComponentPopupMenu(popup);
+        inventoryList.setInheritsPopupMenu(true);
     }
     
     /**
