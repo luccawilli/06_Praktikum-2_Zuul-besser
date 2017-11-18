@@ -38,12 +38,25 @@ class Room
 
     /**
      * Definiere einen Ausgang fuer diesen Raum.
-     * @param richtung Die Richtung, in der der Ausgang liegen soll
-     * @param nachbar Der Raum, der ueber diesen Ausgang erreicht wird
+     * @param direction Die Richtung, in der der Ausgang liegen soll
+     * @param neighbor Der Raum, der ueber diesen Ausgang erreicht wird
      */
-    public void SetExist(CardinalPoints richtung, Room nachbar) 
+    public void SetExit(CardinalPoints direction, Room neighbor) 
     {
-        exits.put(richtung, nachbar);
+        exits.put(direction, neighbor);
+        CardinalPoints againstDirection = CardinalPoints.North;
+        switch(direction){            
+            case North:                
+                againstDirection = CardinalPoints.South;
+                break;
+            case West:                
+                againstDirection = CardinalPoints.East;
+                break;
+            case East:                
+                againstDirection = CardinalPoints.West;
+                break;
+        }
+        neighbor.exits.put(againstDirection, this);
     }
     
 
@@ -127,7 +140,7 @@ class Room
      */
     public String GetLongDescription()
     {
-        return "Sie sind " + description + ".\n" 
+        return description + ".\n" 
         		+ getExistsAsString()
         		+ getItemsAsString()
         	    + getPersonsAsString();

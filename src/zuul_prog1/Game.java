@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Dies ist die Hauptklasse der Anwendung "Die Welt von Zuul". "Die Welt von
@@ -24,10 +25,18 @@ import java.util.List;
  */
 public class Game {
 
-    private Parser parser;
     public Room currentLocation;
     public Person player;
     private List<IGame> listeners = new ArrayList<IGame>();
+    private String[] randomDialog = {
+        "Au du tust mir weh!!", 
+        "Oh nein, du hast mich getroffen!", 
+        "Was ist den mit dir los?", 
+        "Neeeiiiin!!??", 
+        "Ups?",
+        "Man schlägt keine Frauen.",
+        "Was sind Sie den für ein Mann!!",
+    }; 
 
     /**
      * Erzeuge ein Spiel und initialisiere die Spielwelt.
@@ -35,14 +44,27 @@ public class Game {
     public Game(IGame writeDownListener) {
         listeners.add(writeDownListener);
         generateWorld();
-        parser = new Parser();
         start();
+        MusicPlayer player = new MusicPlayer();
+        player.start();
     }
 
+    /**
+     * Listener für die Ausgabe von Text.
+     * Wird im View verwendet um den Text in die Textarea zu schreiben.
+     * @param text Der zuschreibende Text
+     */
     public void writeDown(String text) {
         // Notify everybody that may be interested.
         for (IGame hl : listeners) {
-            hl.writeDown(text);            
+            hl.writeDown(text);   
+        }
+    }
+    
+    private void gameOver(){
+         // Notify everybody that may be interested.
+        for (IGame hl : listeners) {
+            hl.gameOver();   
         }
     }
 
@@ -64,21 +86,29 @@ public class Game {
      */
     private ArrayList<Room> createRooms() {
         HashMap<String, Room> raum = new HashMap<String, Room>();
-        // die Raeume erzeugen
-        raum.put("draussen", new Room("Vor dem Haupteingang der Universitaet"));
-        raum.put("hoersaal", new Room("In einem Vorlesungssaal"));
-        raum.put("cafeteria", new Room("In der Cafeteria der Uni"));
-        raum.put("labor", new Room("In einem Rechnerraum"));
-        raum.put("buero", new Room("Im Verwaltungsbuero der Informatik"));
+        // die Raeume erzeugen       
+        raum.put("home", new Room("Zuhause"));
+        raum.put("svens", new Room("Sven's Pizza"));
+        raum.put("mainplace", new Room("Marktplatz"));
+        raum.put("bhf", new Room("Bahnhof"));
+        raum.put("pier", new Room("Hafen"));
+        raum.put("park", new Room("Park vor der Universitaet"));
+        raum.put("draussen", new Room("Haupteingang der Universitaet"));
+        raum.put("hoersaal", new Room("Vorlesungssaal"));
+        raum.put("cafeteria", new Room("Cafeteria der Uni"));
+        raum.put("labor", new Room("Rechnerraum"));
+        raum.put("buero", new Room("Verwaltungsbuero der Informatik"));
         // die Ausgaenge initialisieren
-        raum.get("draussen").SetExist(CardinalPoints.East, raum.get("hoersaal"));
-        raum.get("draussen").SetExist(CardinalPoints.South, raum.get("labor"));
-        raum.get("draussen").SetExist(CardinalPoints.West, raum.get("cafeteria"));
-        raum.get("hoersaal").SetExist(CardinalPoints.West, raum.get("draussen"));
-        raum.get("cafeteria").SetExist(CardinalPoints.East, raum.get("draussen"));
-        raum.get("labor").SetExist(CardinalPoints.North, raum.get("draussen"));
-        raum.get("labor").SetExist(CardinalPoints.East, raum.get("buero"));
-        raum.get("buero").SetExist(CardinalPoints.West, raum.get("labor"));
+        raum.get("home").SetExit(CardinalPoints.North, raum.get("mainplace"));
+        raum.get("svens").SetExit(CardinalPoints.East, raum.get("mainplace"));
+        raum.get("bhf").SetExit(CardinalPoints.South, raum.get("mainplace"));
+        raum.get("pier").SetExit(CardinalPoints.West, raum.get("bhf"));
+        raum.get("mainplace").SetExit(CardinalPoints.East, raum.get("park"));
+        raum.get("park").SetExit(CardinalPoints.South, raum.get("draussen")); 
+        raum.get("hoersaal").SetExit(CardinalPoints.West, raum.get("draussen"));
+        raum.get("cafeteria").SetExit(CardinalPoints.East, raum.get("draussen"));
+        raum.get("labor").SetExit(CardinalPoints.North, raum.get("draussen"));        
+        raum.get("buero").SetExit(CardinalPoints.West, raum.get("labor"));
 
         // Startraum
         currentLocation = raum.get("draussen");
@@ -240,27 +270,53 @@ public class Game {
     */
     public void killPerson(int nr) {
         Person person = currentLocation.GetPerson(nr);
+        String writeDown = "";
         if (person == null) {
             writeDown("Es gibt keine Person mit Nummer " + nr);
         } else {
             person.SetLifePoints(person.GetLifePoints() - player.GetDamage());
-            writeDown("Sie haben " + player.GetDamage() + " an " + person.GetName() + " angerichtet!!");
-            writeDown("Restliche Lebenspunkte: " + person.GetLifePoints());
+            writeDown = "Sie haben " + player.GetDamage() + " an " + person.GetName() + " angerichtet!! \n"
+                    + "Restliche Lebenspunkte: " + person.GetLifePoints();
+            writeDown += "\n Leider hat sich die Person gewehrt und hat einen Schaden von " + person.GetDamage() + " verursacht.";
+            player.SetLifePoints(player.GetLifePoints() - person.GetDamage());
+            if(player.GetLifePoints() <= 0){
+                writeDown(writeDown + "\n Du bist leider gestorben.... Game Over.");
+                gameOver();
+                return;
+            }
+            Random gen = new Random();
+            writeDown += "\n" + person.GetName() + ": " + randomDialog[gen.nextInt(randomDialog.length)];
+            int deathMatch = gen.nextInt(2);
+            if(deathMatch == 1){
+                writeDown += "\nDu hast " + person.GetName() + " zu häufig geschlagen!! \n Das gibt einen Death-Match!!";
+                while(person.GetLifePoints() > 0 || player.GetLifePoints() > 0){
+                    player.SetLifePoints(player.GetLifePoints() - person.GetDamage());
+                    writeDown += "\nDu hast " + person.GetDamage() + " kassiert!";
+                    if(player.GetLifePoints() <= 0){                        
+                        writeDown += "\n Du bist leider gestorben.... Game Over.";
+                        gameOver();
+                        break;
+                    }
+                    person.SetLifePoints(person.GetLifePoints() - player.GetDamage());
+                    writeDown += "\n" + person.GetName() + " hast " + person.GetDamage() + " kassiert!";
+                }                
+                
+            }
             if (person.GetLifePoints() <= 0) {
-                writeDown("Sie haben " + person.GetName() + " getötet!!");
+                writeDown += "\n Sie haben " + person.GetName() + " getötet!!";
                 currentLocation.Leave(nr);
                 Item corpse = new Item("Leiche von " + person.GetName(),
                         "Die Leiche von " + person.GetName() + ".",
                         person.GetWeight(),
-                        person.GetDamage(),
-                        true
+                        person.GetDamage()
                 );
                 currentLocation.InsertItem(corpse);
             }
-
+            
         }
-    }
-
+        writeDown(writeDown);
+    }   
+    
     /**
      *
      * @param nr
@@ -273,8 +329,8 @@ public class Game {
                 writeDown("Der Gegenstand " + item.GetName() + " wurde aus deiner Hand entfernt und in deinen Rucksack gelegt.");
             }
             player.SetWeapon(item);
-            writeDown("Der Gegenstand " + item.GetName() + " ist nun deine Waffe!");
-            writeDown("Er erhöht deinen Schaden um " + item.GetDamage());
+            writeDown("Der Gegenstand " + item.GetName() + " ist nun deine Waffe! \n"
+                    + "Er erhöht deinen Schaden um " + item.GetDamage());
         } catch (Exception ex) {
             writeDown("Geben Sie die Nummer des Gegenstandes ein.");
         }

@@ -13,7 +13,6 @@ public class Item {
 	private final String description;
 	private final int weight;
         private final int damage;
-        private final boolean isWeapon;
         
 	
 	/**
@@ -27,7 +26,7 @@ public class Item {
 	 * @param gewicht Das Gewicht des Gegenstands
 	 */
 	public Item(String name, int gewicht) {
-		this(name, "", gewicht, 0, false);
+		this(name, "", gewicht, 0);
 	}
 
 	/**
@@ -40,12 +39,11 @@ public class Item {
 	 * @param name Der Name des Gegenstands
 	 * @param gewicht Das Gewicht des Gegenstands
 	 */
-	public Item(String name, String beschreibung, int gewicht, int damage, boolean isWeapon){		
+	public Item(String name, String beschreibung, int gewicht, int damage){		
 		this.name = name;
 		this.weight = gewicht;
 		this.description = beschreibung;
-                this.damage = damage;
-                this.isWeapon = isWeapon;
+                this.damage = damage;                
 		if(! isDefinitionValid()) {
 			throw new IllegalArgumentException(
 					"Gegenstandsdefinition ist ungueltig.");
@@ -85,12 +83,5 @@ public class Item {
 	 */
 	public int GetDamage() {
 		return damage;
-	}
-        
-        /**
-	 * @return the is Weapon of the item
-	 */
-	public boolean IsWeapon() {
-		return isWeapon;
 	}
 }

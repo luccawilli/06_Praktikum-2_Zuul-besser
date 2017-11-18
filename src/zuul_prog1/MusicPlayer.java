@@ -1,0 +1,50 @@
+/*
+ * Source https://stackoverflow.com/questions/4875080/music-loop-in-java
+ */
+package zuul_prog1;
+
+import java.io.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+/**
+ *
+ * @author Mangusbrother
+ */
+
+public class MusicPlayer extends Thread {
+ 
+    public void run() {
+        try {
+            startPlayback();
+        } catch (Exception ex) {           
+            String exc = ex.getMessage();
+        }
+    }
+
+    public void startPlayback() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+        AudioInputStream as1 = AudioSystem.getAudioInputStream(getClass().getResource("sounds/fairyland.wav"));
+        AudioFormat af = as1.getFormat();
+        Clip clip1 = AudioSystem.getClip();
+        DataLine.Info info = new DataLine.Info(Clip.class, af);
+
+        Line line1 = AudioSystem.getLine(info);
+
+        if ( ! line1.isOpen() )
+        {
+         clip1.open(as1);
+         clip1.loop(Clip.LOOP_CONTINUOUSLY);
+         clip1.start();
+        }
+
+    }    
+}

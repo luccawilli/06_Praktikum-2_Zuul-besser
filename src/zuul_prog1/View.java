@@ -5,6 +5,8 @@
  */
 package zuul_prog1;
 
+import java.awt.Button;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 /**
@@ -69,6 +72,7 @@ public class View extends javax.swing.JFrame implements IGame {
         westButton = new javax.swing.JButton();
         southButton = new javax.swing.JButton();
         eastButton = new javax.swing.JButton();
+        restartButton = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -81,17 +85,26 @@ public class View extends javax.swing.JFrame implements IGame {
         playerDamageLabel = new javax.swing.JLabel();
         playerWeaponLabel = new javax.swing.JLabel();
         playerLifepointsLabel = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        infoMenu = new javax.swing.JMenu();
+        helpMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1216, 500));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        outputArea.setEditable(false);
         outputArea.setColumns(20);
+        outputArea.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         outputArea.setRows(5);
-        outputArea.setFocusable(false);
         outputArea.setMaximumSize(new java.awt.Dimension(164, 94));
         outputArea.setMinimumSize(new java.awt.Dimension(164, 94));
+        outputArea.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                outputAreaMouseWheelMoved(evt);
+            }
+        });
         jScrollPane2.setViewportView(outputArea);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -104,7 +117,7 @@ public class View extends javax.swing.JFrame implements IGame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -200,9 +213,9 @@ public class View extends javax.swing.JFrame implements IGame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(roomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(roomLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(roomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -217,8 +230,10 @@ public class View extends javax.swing.JFrame implements IGame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
+
+        jPanel3Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel6, roomLabel});
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel4.setMinimumSize(new java.awt.Dimension(322, 530));
@@ -258,6 +273,13 @@ public class View extends javax.swing.JFrame implements IGame {
             }
         });
 
+        restartButton.setText("Restart");
+        restartButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                restartButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -265,16 +287,22 @@ public class View extends javax.swing.JFrame implements IGame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(westButton)
-                        .addGap(95, 95, 95)
-                        .addComponent(eastButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(southButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(northButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(82, Short.MAX_VALUE))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addComponent(westButton)
+                                .addGap(95, 95, 95)
+                                .addComponent(eastButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(124, 124, 124)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(southButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(northButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 72, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(restartButton)))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,7 +315,9 @@ public class View extends javax.swing.JFrame implements IGame {
                     .addComponent(eastButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(southButton)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(restartButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -390,7 +420,7 @@ public class View extends javax.swing.JFrame implements IGame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 370, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -432,6 +462,21 @@ public class View extends javax.swing.JFrame implements IGame {
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jPanel2, jPanel3, jPanel4});
+
+        infoMenu.setText("Info");
+
+        helpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
+        helpMenuItem.setText("Hilfe");
+        helpMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpMenuItemActionPerformed(evt);
+            }
+        });
+        infoMenu.add(helpMenuItem);
+
+        jMenuBar1.add(infoMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -482,9 +527,51 @@ public class View extends javax.swing.JFrame implements IGame {
 
     }//GEN-LAST:event_itemsListMouseClicked
 
+    private void outputAreaMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_outputAreaMouseWheelMoved
+        if(evt.isControlDown()){
+            int wheelRotation = evt.getScrollAmount() * evt.getWheelRotation() * -1;
+            Font font = outputArea.getFont();
+            float size = font.getSize() + (wheelRotation / 2);
+            outputArea.setFont(font.deriveFont(size));
+        }        
+    }//GEN-LAST:event_outputAreaMouseWheelMoved
+
+    private void restartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restartButtonActionPerformed
+        game = null;
+        game = new Game(this);        
+        SetEnabledForAllControl(true);
+        InitPopups();
+        UpdateLocation();
+        UpdatePlayer();
+    }//GEN-LAST:event_restartButtonActionPerformed
+
+    private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
+        HelpView help = new HelpView();
+        help.setContentPane(help.getContentPane());
+        help.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        help.pack();
+
+        help.setVisible(true);
+    }//GEN-LAST:event_helpMenuItemActionPerformed
+
     @Override
     public void writeDown(String text) {
         outputArea.setText(text + "\n");
+    }
+    
+    @Override
+    public void gameOver() {
+        SetEnabledForAllControl(false);
+    }
+    
+    private void SetEnabledForAllControl(Boolean value){
+        inventoryList.setEnabled(value);
+        itemsList.setEnabled(value);
+        personsList.setEnabled(value);
+        eastButton.setEnabled(value);
+        northButton.setEnabled(value);
+        westButton.setEnabled(value);
+        southButton.setEnabled(value);
     }
     
     private void UpdateLocation(){
@@ -613,11 +700,14 @@ public class View extends javax.swing.JFrame implements IGame {
                 public void actionPerformed(ActionEvent e) {
                     JMenuItem a = ((JMenuItem) e.getSource());
                     int i = inventoryList.getSelectedIndex();
-                    /*if(i != -1){
-                        game.takeItem(i);
+                    if(i != -1){
+                        //Item item = game.player.GetWeapon();
+                        Item item = game.player.GetBackpack().get(i);
+                        game.currentLocation.InsertItem(item);
+                        game.player.GetBackpack().remove(i);
                         UpdateBackpack();
                         UpdateItems();
-                    } */                  
+                    }                 
                 }
             });
         itemsActionsDict.put("Waffe", new AbstractAction("takeAsWeapon") {
@@ -678,6 +768,8 @@ public class View extends javax.swing.JFrame implements IGame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton eastButton;
+    private javax.swing.JMenuItem helpMenuItem;
+    private javax.swing.JMenu infoMenu;
     private javax.swing.JList inventoryList;
     private javax.swing.JList itemsList;
     private javax.swing.JLabel jLabel1;
@@ -689,6 +781,7 @@ public class View extends javax.swing.JFrame implements IGame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -710,6 +803,7 @@ public class View extends javax.swing.JFrame implements IGame {
     private javax.swing.JLabel playerLifepointsLabel;
     private javax.swing.JLabel playerNameLabel;
     private javax.swing.JLabel playerWeaponLabel;
+    private javax.swing.JButton restartButton;
     private javax.swing.JLabel roomLabel;
     private javax.swing.JPanel roomPanel;
     private javax.swing.JButton southButton;

@@ -11,4 +11,6 @@ package zuul_prog1;
  */
 public interface IGame {
     void writeDown(String text);
+    
+    void gameOver();
 }
