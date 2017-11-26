@@ -1,7 +1,6 @@
 package zuul_prog1;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -27,6 +26,7 @@ public class Game {
 
     public Room currentLocation;
     public Person player;
+    public MusicPlayer musicPlayer;
     private List<IGame> listeners = new ArrayList<IGame>();
     private String[] randomDialog = {
         "Au du tust mir weh!!", 
@@ -45,8 +45,8 @@ public class Game {
         listeners.add(writeDownListener);
         generateWorld();
         start();
-        MusicPlayer player = new MusicPlayer();
-        player.start();
+        musicPlayer = new MusicPlayer();
+        musicPlayer.start();
     }
 
     /**
@@ -73,7 +73,7 @@ public class Game {
      * diese mit Personen und Gegenstaenden.
      */
     private void generateWorld() {
-        player = new Person("Captain Kirk", 220, 10, 100, null, 83);
+        player = new Person("Captain Kirk", 220, 10, 100, null, 83, getClass().getResource("pictures/personCaptainKrikPicture.jpg"));
         ArrayList<Room> raeume = createRooms();
         fillWithPersons(raeume);
         fillWithItems(raeume);
@@ -127,10 +127,10 @@ public class Game {
      */
     private void fillWithPersons(ArrayList<Room> raum) {
         ArrayList<Person> person = new ArrayList<Person>();
-        person.add(new Person("Dr. Hans Muster", 40, 110, 2, null, 82));
-        person.add(new Person("Peter Stark", 80, 200, 20, null, 87));
-        person.add(new Person("Anna Pfister", 45, 90, 12, null, 65));
-        person.add(new Person("Prof. Dr. Luna Berger", 35, 112, 15, null, 55));
+        person.add(new Person("Dr. Hans Muster", 40, 110, 2, null, 82, getClass().getResource("pictures/personDrHansMusterPicture.jpg")));
+        person.add(new Person("Peter Stark", 80, 200, 20, null, 87, getClass().getResource("pictures/personPeterStarkPicture.jpg")));
+        person.add(new Person("Anna Pfister", 45, 90, 12, null, 65, getClass().getResource("pictures/personAnnaPfisterPicture.jpg")));
+        person.add(new Person("Prof. Dr. Luna Berger", 35, 112, 15, null, 55, getClass().getResource("pictures/personProfDrLunaBergerPicture.jpg")));
         int counter = 0;
         while (person.size() > 0) {
             if (Math.random() > 0.5) {
