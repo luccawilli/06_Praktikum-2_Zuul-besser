@@ -1,5 +1,6 @@
 package zuul_prog1;
 
+import java.net.URL;
 import java.util.ArrayList;
 /**
  * Diese Klasse modeliert eine Person, die einen Namen
@@ -18,20 +19,28 @@ public class Person {
         private final int weight;
         private final int damage;
 	private final int capacity;
+        private final URL imagePath;
         private Item weapon;
 	private final ArrayList<Item> backpack = new ArrayList<Item>();
 
 	/**
 	 * Erzeugt eine Person mit Namen und Tragkraft.
-	 * @param capacity
+        * @param name
+	* @param capacity
+        * @param lifePoints
+        * @param damage
+        * @param weapon
+        * @param weight
+        * @param imagePath
 	 */
-	public Person(String name, int capacity, int lifePoints, int damage, Item weapon, int weight) {
+	public Person(String name, int capacity, int lifePoints, int damage, Item weapon, int weight, URL imagePath) {
 		this.capacity = capacity;
 		this.name = name;
                 this.lifePoints = lifePoints;
                 this.damage = damage;
                 this.weapon = weapon;
                 this.weight = weight;
+                this.imagePath = imagePath;
 	}
 
 	public ArrayList<Item> GetBackpack() {
@@ -90,7 +99,7 @@ public class Person {
 	}
         
         /**
-	 * @return the weapon of the person
+         * sets the weapon of the person
 	 */
 	public void SetWeapon(Item newWeapon) {
                 weapon = newWeapon;
@@ -101,6 +110,13 @@ public class Person {
 	 */
 	public int GetWeight() {
 		return weight;
+	}
+        
+        /**
+	 * @return the image of the person
+	 */
+	public URL GetImagePath() {
+		return imagePath;
 	}
         
 }

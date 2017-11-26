@@ -1,16 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package zuul_prog1;
 
 /**
- *
- * @author Lucca
+ *  interface to get the events of the game class.
  */
 public interface IGame {
+    // method to write returned text.
     void writeDown(String text);
-    
+    // method to call game over -- end the game
     void gameOver();
 }
