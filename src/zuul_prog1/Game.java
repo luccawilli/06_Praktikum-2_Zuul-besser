@@ -85,19 +85,18 @@ public class Game {
      * @return Die angelegten Raeume
      */
     private ArrayList<Room> createRooms() {
-        HashMap<String, Room> raum = new HashMap<String, Room>();
+        HashMap<String, Room> raum = new HashMap<>();
         // die Raeume erzeugen       
-        raum.put("home", new Room("Zuhause"));
-        raum.put("svens", new Room("Sven's Pizza"));
-        raum.put("mainplace", new Room("Marktplatz"));
-        raum.put("bhf", new Room("Bahnhof"));
-        raum.put("pier", new Room("Hafen"));
-        raum.put("park", new Room("Park vor der Universitaet"));
-        raum.put("draussen", new Room("Haupteingang der Universitaet"));
-        raum.put("hoersaal", new Room("Vorlesungssaal"));
-        raum.put("cafeteria", new Room("Cafeteria der Uni"));
-        raum.put("labor", new Room("Rechnerraum"));
-        raum.put("buero", new Room("Verwaltungsbuero der Informatik"));
+        raum.put("home", new Room("Zuhause", getClass().getResource("pictures/roomZuhausePicture.jpg")));
+        raum.put("svens", new Room("Sven's Pizza", getClass().getResource("pictures/roomSvenPizzaPicture.jpg")));
+        raum.put("mainplace", new Room("Marktplatz", getClass().getResource("pictures/roomMarktplatzPicture.jpg")));
+        raum.put("bhf", new Room("Bahnhof", getClass().getResource("pictures/roomHauptbahnhofPicture.jpg")));
+        raum.put("pier", new Room("Hafen", getClass().getResource("pictures/roomHafenPicture.jpg")));
+        raum.put("park", new Room("Park vor der Universitaet", getClass().getResource("pictures/roomParkPicture.jpg")));
+        raum.put("draussen", new Room("Haupteingang der Universitaet", getClass().getResource("pictures/roomUniEingangPicture.jpg")));
+        raum.put("hoersaal", new Room("Vorlesungssaal", getClass().getResource("pictures/roomHoersaalPicture.jpg")));
+        raum.put("cafeteria", new Room("Cafeteria der Uni", getClass().getResource("pictures/roomCafeteriaPicture.jpg")));
+        
         // die Ausgaenge initialisieren
         raum.get("home").SetExit(CardinalPoints.North, raum.get("mainplace"));
         raum.get("svens").SetExit(CardinalPoints.East, raum.get("mainplace"));
@@ -107,9 +106,7 @@ public class Game {
         raum.get("park").SetExit(CardinalPoints.South, raum.get("draussen")); 
         raum.get("hoersaal").SetExit(CardinalPoints.West, raum.get("draussen"));
         raum.get("cafeteria").SetExit(CardinalPoints.East, raum.get("draussen"));
-        raum.get("labor").SetExit(CardinalPoints.North, raum.get("draussen"));        
-        raum.get("buero").SetExit(CardinalPoints.West, raum.get("labor"));
-
+                
         // Startraum
         currentLocation = raum.get("draussen");
         ArrayList<Room> raumliste = new ArrayList<Room>();

@@ -1,5 +1,6 @@
 package zuul_prog1;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 class Room 
 {
     private final String description;
+    private final URL imagePath;
     private final ArrayList<Person> persons = new ArrayList<Person>();
     private final ArrayList<Item> items = new ArrayList<Item>();
     public final HashMap<CardinalPoints, Room> exits = new HashMap<CardinalPoints, Room>();
@@ -30,9 +32,10 @@ class Room
      * @param beschreibung enthaelt eine Beschreibung in der Form
      *        "in einer Kueche" oder "auf einem Sportplatz".
      */
-    public Room(String beschreibung) 
+    public Room(String beschreibung, URL imagePath) 
     {
         this.description = beschreibung; 
+        this.imagePath = imagePath;
     }
 
     /**
@@ -195,5 +198,14 @@ class Room
     {
         return exits.get(richtung);
     }
+    
+    /**
+     * 
+     * @return 
+     */
+    public URL GetImagePath() {
+        return imagePath;
+    }
+        
 }
 
