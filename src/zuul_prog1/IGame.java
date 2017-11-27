@@ -1,11 +1,18 @@
 package zuul_prog1;
 
 /**
- *  interface to get the events of the game class.
+ *  Interface to get the events of the game class.
+ *  @author Lucca Willi
  */
 public interface IGame {
-    // method to write returned text.
+    /**
+     * Method to write returned text.
+     * @param text The text to write.
+     */
     void writeDown(String text);
-    // method to call game over -- end the game
+    
+    /**
+     * Method to call game over -- end the game
+     */
     void gameOver();
 }

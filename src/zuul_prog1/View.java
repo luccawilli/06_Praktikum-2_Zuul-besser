@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package zuul_prog1;
 
 import java.awt.Font;
@@ -18,15 +13,18 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 /**
- *
- * @author Lucca
+ * The view of the game, implements the igame interface.
+ * @author Lucca Willi
  */
 public class View extends javax.swing.JFrame implements IGame {
 
+    /**
+     * The created game.
+     */
     private Game game;
     
     /**
-     * Creates new form View
+     * Creates the view and inits the game.
      */
     public View() {
         initComponents();
@@ -103,11 +101,6 @@ public class View extends javax.swing.JFrame implements IGame {
 
         itemsList.setModel(new DefaultListModel());
         itemsList.setPreferredSize(new java.awt.Dimension(200, 100));
-        itemsList.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                itemsListMouseClicked(evt);
-            }
-        });
         jScrollPane4.setViewportView(itemsList);
 
         jLabel1.setText("Gegenstände:");
@@ -462,7 +455,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     *      
+     * Handles the button north action performed event.
      */
     private void northButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_northButtonActionPerformed
         game.changeRoom(CardinalPoints.North);        
@@ -470,7 +463,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }//GEN-LAST:event_northButtonActionPerformed
 
     /**
-     *      
+     *  Handles the button south action performed event.
      */
     private void southButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_southButtonActionPerformed
         game.changeRoom(CardinalPoints.South);        
@@ -478,7 +471,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }//GEN-LAST:event_southButtonActionPerformed
 
     /**
-     *      
+     * Handles the button east action performed event.     
      */
     private void eastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eastButtonActionPerformed
         game.changeRoom(CardinalPoints.East);
@@ -486,16 +479,16 @@ public class View extends javax.swing.JFrame implements IGame {
     }//GEN-LAST:event_eastButtonActionPerformed
 
     /**
-     *      
+     * Handles the button room placeholder action performed event.     
      */
     private void panelRoomPictureBoxPlaceholderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelRoomPictureBoxPlaceholderMouseClicked
-        if(evt.getButton() == 1){//links
+        if(evt.getButton() == 1){//left mouse button
             game.look();
         }
     }//GEN-LAST:event_panelRoomPictureBoxPlaceholderMouseClicked
 
     /**
-     *      
+     * Handles the button west action performed event.     
      */
     private void westButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_westButtonActionPerformed
         game.changeRoom(CardinalPoints.West);
@@ -503,14 +496,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }//GEN-LAST:event_westButtonActionPerformed
 
     /**
-     *      
-     */
-    private void itemsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemsListMouseClicked
-
-    }//GEN-LAST:event_itemsListMouseClicked
-
-    /**
-     *      
+     * Handles the output area mouse wheel moeved event.     
      */
     private void outputAreaMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_outputAreaMouseWheelMoved
         if(evt.isControlDown()){
@@ -522,7 +508,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }//GEN-LAST:event_outputAreaMouseWheelMoved
 
     /**
-     *      
+     * Handles the restart button action performed event.     
      */
     private void restartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restartButtonActionPerformed
         game = null;
@@ -534,7 +520,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }//GEN-LAST:event_restartButtonActionPerformed
 
     /**
-     *      
+     * Handles the help menu item action performed event.     
      */
     private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
         HelpView help = new HelpView();
@@ -546,7 +532,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }//GEN-LAST:event_helpMenuItemActionPerformed
 
     /**
-     *      
+     * Handles the mute sound menu item action performed event.     
      */
     private void muteSoundMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_muteSoundMenuItemActionPerformed
         if(muteSoundMenuItem.getState()){
@@ -562,8 +548,8 @@ public class View extends javax.swing.JFrame implements IGame {
     }//GEN-LAST:event_muteSoundMenuItemActionPerformed
 
     /**
-     *      
-     * @param text
+     * Overrides the write down event from the igame interface.
+     * @param text Write the text into the output area.
      */
     @Override
     public void writeDown(String text) {
@@ -571,7 +557,8 @@ public class View extends javax.swing.JFrame implements IGame {
     }
     
     /**
-     *      
+     * Overrides the game over event from the igame interface.
+     * Disables all control except the restart button and the menu.
      */
     @Override
     public void gameOver() {
@@ -579,7 +566,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }
     
     /**
-     *      
+     * Enables all controls    
      */
     private void SetEnabledForAllControl(Boolean value){
         inventoryList.setEnabled(value);
@@ -592,7 +579,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }
     
     /**
-     *      
+     *  Updates all controls which are connected to the location.   
      */
     private void UpdateLocation(){
         HashMap<CardinalPoints, Room> k = game.currentLocation.exits;
@@ -612,7 +599,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }
     
     /**
-     *      
+     * Updates the items list.     
      */
     private void UpdateItems(){
         DefaultListModel dItemListModel = new DefaultListModel();
@@ -625,7 +612,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }
     
     /**
-     *      
+     * Updates the person list.     
      */
     private void UpdatePersons(){
         DefaultListModel dPersonListModel = new DefaultListModel();
@@ -638,7 +625,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }
     
     /**
-     *      
+     *  Updates all controls of the player.    
      */
     private void UpdatePlayer(){
         if(game != null && game.player != null){
@@ -657,9 +644,12 @@ public class View extends javax.swing.JFrame implements IGame {
     }
     
     /**
-     * 
-     * @param panel
-     * @param imageUrl 
+     * Sets an image as the background of a panel.
+     * Handle via a jLabel.
+     * @param panel The panel which background should be setted.
+     * @param imageUrl The URL of the image.
+     * @param width The image width to be shown.
+     * @param height The image height to be shown. 
      */
     private void SetBackgroundPicture(JPanel panel, URL imageUrl, int width, int height){
         panel.removeAll();
@@ -674,12 +664,12 @@ public class View extends javax.swing.JFrame implements IGame {
     }
     
     /**
-     *      
+     * Updates the inventory list.      
      */
-    private void UpdateBackpack(){
+    private void UpdateInventory(){
         DefaultListModel dItemListModel = new DefaultListModel();
         int i = 0;
-        for(Item p : game.player.GetBackpack()){
+        for(Item p : game.player.GetInventory()){
             dItemListModel.add(i, p.GetName());
             i++;
         }
@@ -687,7 +677,7 @@ public class View extends javax.swing.JFrame implements IGame {
     }
     
     /**
-     *      
+     * Creates the contextmenus of the lists.   
      */    
     private void InitPopups(){        
         JPopupMenu popup = new JPopupMenu();
@@ -698,7 +688,7 @@ public class View extends javax.swing.JFrame implements IGame {
                     int i = itemsList.getSelectedIndex();
                     if(i != -1){
                         game.takeItem(i);
-                        UpdateBackpack();
+                        UpdateInventory();
                         UpdateItems();
                     }                    
                 }
@@ -720,7 +710,7 @@ public class View extends javax.swing.JFrame implements IGame {
                     if(i != -1){
                         game.controlPerson(i);
                         UpdatePlayer();
-                        UpdateBackpack();
+                        UpdateInventory();
                         UpdatePersons();
                     }                    
                 }
@@ -733,7 +723,7 @@ public class View extends javax.swing.JFrame implements IGame {
                         game.killPerson(i);
                         UpdatePlayer();
                         UpdateItems();
-                        UpdateBackpack();
+                        UpdateInventory();
                         UpdatePersons();
                     }                    
                 }
@@ -756,10 +746,10 @@ public class View extends javax.swing.JFrame implements IGame {
                     int i = inventoryList.getSelectedIndex();
                     if(i != -1){
                         //Item item = game.player.GetWeapon();
-                        Item item = game.player.GetBackpack().get(i);
+                        Item item = game.player.GetInventory().get(i);
                         game.currentLocation.InsertItem(item);
-                        game.player.GetBackpack().remove(i);
-                        UpdateBackpack();
+                        game.player.GetInventory().remove(i);
+                        UpdateInventory();
                         UpdateItems();
                     }                 
                 }
@@ -770,7 +760,7 @@ public class View extends javax.swing.JFrame implements IGame {
                     int i = inventoryList.getSelectedIndex();
                     if(i != -1){
                         game.takeAsWeapon(i);
-                        UpdateBackpack();
+                        UpdateInventory();
                         UpdatePlayer();
                     }                    
                 }

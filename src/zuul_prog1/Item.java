@@ -1,87 +1,101 @@
 package zuul_prog1;
+
 /**
- * Diese Klasse modeliert einen Gegenstand
- * mit seinem Namen und seiner Beschreibung sowie 
- * seinem Gewicht.
- *  
- * @author tebe
- * @version 1.0
+ * The item class, to generate items.
+ *
+ * @author tebe and Lucca Willi
+ * @version 1.1
  *
  */
 public class Item {
-	private final String name;
-	private final String description;
-	private final int weight;
-        private final int damage;
-        
-	
-	/**
-	 * Erzeugt einen Gegenstand mit Namen und 
-	 * Gewicht aber ohne genauere Beschreibung.
-	 * 
-	 * Der Name darf nicht null sein und das
-	 * Gewicht muss groesser als 0 sein.
-	 *  
-	 * @param name Der Name des Gegenstands
-	 * @param gewicht Das Gewicht des Gegenstands
-	 */
-	public Item(String name, int gewicht) {
-		this(name, "", gewicht, 0);
-	}
 
-	/**
-	 * Erzeugt einen Gegenstand mit Namen und 
-	 * Gewicht und genauere Beschreibung.
-	 * 
-	 * Name und Beschreibung duerfen nicht null sein und das
-	 * Gewicht muss groesser als 0 sein.
-	 * 
-	 * @param name Der Name des Gegenstands
-	 * @param gewicht Das Gewicht des Gegenstands
-	 */
-	public Item(String name, String beschreibung, int gewicht, int damage){		
-		this.name = name;
-		this.weight = gewicht;
-		this.description = beschreibung;
-                this.damage = damage;                
-		if(! isDefinitionValid()) {
-			throw new IllegalArgumentException(
-					"Gegenstandsdefinition ist ungueltig.");
-		}
-	}
-	
-	private boolean isDefinitionValid(){
-		return !(name == null || description == null || weight <= 0);
-	}
-	
-	/**
-	 * @return Der Name des Gegenstands
-	 */
-	public String GetName() {
-		return name;
-	}
+    /**
+     * The name of the item.
+     */
+    private final String name;
+    
+    /**
+     * The description of the item.
+     */
+    private final String description;
+    
+    /**
+     * The weight of the item.
+     */
+    private final int weight;
+    
+    /**
+     * The damage of the weapon. 
+     * (Will be added to the damage the person given, when carried).
+     */
+    private final int damage;
 
-	/**
-	 * Gibt die Beschreibung des Gegenstandes zurueck.
-	 * Falls der Gegenstand ueber keine Beschreibung
-	 * verfuegt, wird ein leerer String zurueckgegeben.
-	 * @return Die Beschreibung des Gegenstands
-	 */
-	public String GetDesciption() {
-		return description;
-	}
+    /**
+     * Inits the item in short.
+     * Don't leave the name blank.
+     * @param name The name of the item.
+     * @param weight The weight of the item.
+     */
+    public Item(String name, int weight) {
+        this(name, "", weight, 0);
+    }
 
-	/**
-	 * @return Das Gewicht des Gegenstands
-	 */
-	public int GetWeight() {
-		return weight;
-	}
-        
-        /**
-	 * @return the damage of the item
-	 */
-	public int GetDamage() {
-		return damage;
-	}
+    /**
+     * Creates the whole item.
+     * Don't leave the name blank.
+     * @param name The name of the item.
+     * @param description The desciription of the item.
+     * @param weight The weight of the item.
+     * @param damage The damge of the item.
+     */
+    public Item(String name, String description, int weight, int damage) {
+        this.name = name;
+        this.weight = weight;
+        this.description = description;
+        this.damage = damage;
+        if (!isDefinitionValid()) {
+            throw new IllegalArgumentException(
+                    "Gegenstandsdefinition ist ungueltig.");
+        }
+    }
+
+    /**
+     * Checks if the definition in valid.
+     * @return True if name, description are not null and the weigth is highter then 0.
+     */
+    private boolean isDefinitionValid() {
+        return !(name == null || description == null || weight <= 0);
+    }
+
+    /**
+     * Gets the name of the item.
+     * @return The name.
+     */
+    public String GetName() {
+        return name;
+    }
+
+    /**
+     * The description of the item.
+     * @return The description.
+     */
+    public String GetDesciption() {
+        return description;
+    }
+
+    /**
+     * Gets the weight of the item.
+     * @return The weight.
+     */
+    public int GetWeight() {
+        return weight;
+    }
+
+    /**
+     * Gets the damage of the item.
+     * @return The damage
+     */
+    public int GetDamage() {
+        return damage;
+    }
 }

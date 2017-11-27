@@ -6,29 +6,37 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Dies ist die Hauptklasse der Anwendung "Die Welt von Zuul". "Die Welt von
- * Zuul" ist ein sehr einfaches, textbasiertes Adventure-Game. Ein Spieler kann
- * sich in einer Umgebung bewegen, die Kontrolle von anderen Personen im Raum
- * uebernehmen und Gegenstaende einpacken, sofern seine Tragkraft ausreicht. Das
- * Spiel sollte auf jeden Fall noch weiter ausgebaut werden, damit es
- * interessanter wird!
+ * The game class, which contains the whole game.
  *
- *
- * Diese Instanz dieser Klasse erzeugt und initialisiert alle anderen Objekte
- * der Anwendung: Sie legt alle Raeume und einen Parser an und startet das
- * Spiel. Sie wertet auch die Befehle aus, die der Parser liefert und sorgt fuer
- * ihre Ausfuehrung.
- *
- * @author tebe (Original: Michael Koelling und David J. Barnes)
- * @version 1.0
+ * @author tebe (Original: Michael Koelling und David J. Barnes) and Lucca Willi
+ * @version 1.1
  */
 public class Game {
 
+    /**
+     * The current shown room.
+     */
     public Room currentLocation;
+    
+    /**
+     * The player, the person which is controled.
+     */
     public Person player;
+    
+    /**
+     * The background music player.
+     */
     public MusicPlayer musicPlayer;
+    
+    /**
+     * The interface events listener.
+     */
     private List<IGame> listeners = new ArrayList<IGame>();
-    private String[] randomDialog = {
+    
+    /**
+     * The array string with some random text for the kill method.
+     */
+    private final String[] randomDialog = {
         "Au du tust mir weh!!", 
         "Oh nein, du hast mich getroffen!", 
         "Was ist den mit dir los?", 
@@ -39,10 +47,11 @@ public class Game {
     }; 
 
     /**
-     * Erzeuge ein Spiel und initialisiere die Spielwelt.
+     * Creates the game.
+     * @param actionListener The action listener.
      */
-    public Game(IGame writeDownListener) {
-        listeners.add(writeDownListener);
+    public Game(IGame actionListener) {
+        listeners.add(actionListener);
         generateWorld();
         start();
         musicPlayer = new MusicPlayer();
@@ -50,9 +59,9 @@ public class Game {
     }
 
     /**
-     * Listener für die Ausgabe von Text.
-     * Wird im View verwendet um den Text in die Textarea zu schreiben.
-     * @param text Der zuschreibende Text
+     * Listener for the write down method of the igame interface.
+     * Should be shown in the view.
+     * @param text The text which will be written.
      */
     public void writeDown(String text) {
         // Notify everybody that may be interested.
@@ -61,6 +70,10 @@ public class Game {
         }
     }
     
+    /**
+     * Listener for the game over method of the igame interface.
+     * Which disabled a big part of the controls.
+     */
     private void gameOver(){
          // Notify everybody that may be interested.
         for (IGame hl : listeners) {
@@ -69,8 +82,8 @@ public class Game {
     }
 
     /**
-     * Baut die Spielewelt auf. Erzeugt die Raeume mit Verbindungen und fuellt
-     * diese mit Personen und Gegenstaenden.
+     * Generates the game world.
+     * And fills the rooms, items and the people into it.
      */
     private void generateWorld() {
         player = new Person("Captain Kirk", 220, 10, 100, null, 83, getClass().getResource("pictures/personCaptainKrikPicture.jpg"));
@@ -80,13 +93,12 @@ public class Game {
     }
 
     /**
-     * Erzeuge alle Raeume, verbinde ihre Ausgaenge miteinander.
-     *
-     * @return Die angelegten Raeume
+     * Creates the rooms and their exits.
+     * @return The created rooms with exits as an arraylist.
      */
     private ArrayList<Room> createRooms() {
         HashMap<String, Room> raum = new HashMap<>();
-        // die Raeume erzeugen       
+        // create rooms     
         raum.put("home", new Room("Zuhause", getClass().getResource("pictures/roomZuhausePicture.jpg")));
         raum.put("svens", new Room("Sven's Pizza", getClass().getResource("pictures/roomSvenPizzaPicture.jpg")));
         raum.put("mainplace", new Room("Marktplatz", getClass().getResource("pictures/roomMarktplatzPicture.jpg")));
@@ -97,7 +109,7 @@ public class Game {
         raum.put("hoersaal", new Room("Vorlesungssaal", getClass().getResource("pictures/roomHoersaalPicture.jpg")));
         raum.put("cafeteria", new Room("Cafeteria der Uni", getClass().getResource("pictures/roomCafeteriaPicture.jpg")));
         
-        // die Ausgaenge initialisieren
+        // create exits
         raum.get("home").SetExit(CardinalPoints.North, raum.get("mainplace"));
         raum.get("svens").SetExit(CardinalPoints.East, raum.get("mainplace"));
         raum.get("bhf").SetExit(CardinalPoints.South, raum.get("mainplace"));
@@ -107,7 +119,7 @@ public class Game {
         raum.get("hoersaal").SetExit(CardinalPoints.West, raum.get("draussen"));
         raum.get("cafeteria").SetExit(CardinalPoints.East, raum.get("draussen"));
                 
-        // Startraum
+        // base room
         currentLocation = raum.get("draussen");
         ArrayList<Room> raumliste = new ArrayList<Room>();
         for (Room r : raum.values()) {
@@ -117,12 +129,10 @@ public class Game {
     }
 
     /**
-     * Verteilt eine Anzahl Personen auf eine Liste von Raeumen. Die Zuteilung
-     * erfolgt auf Basis einer Zufallsstrategie.
-     *
-     * @param raum Liste der Raeume
+     * Fills the person randomly into a room.
+     * @param rooms The given rooms.
      */
-    private void fillWithPersons(ArrayList<Room> raum) {
+    private void fillWithPersons(ArrayList<Room> rooms) {
         ArrayList<Person> person = new ArrayList<Person>();
         person.add(new Person("Dr. Hans Muster", 40, 110, 2, null, 82, getClass().getResource("pictures/personDrHansMusterPicture.jpg")));
         person.add(new Person("Peter Stark", 80, 200, 20, null, 87, getClass().getResource("pictures/personPeterStarkPicture.jpg")));
@@ -131,20 +141,18 @@ public class Game {
         int counter = 0;
         while (person.size() > 0) {
             if (Math.random() > 0.5) {
-                raum.get(counter).Enter(person.get(0));
+                rooms.get(counter).Enter(person.get(0));
                 person.remove(0);
             }
-            counter = (counter + 1) % raum.size();
+            counter = (counter + 1) % rooms.size();
         }
     }
 
     /**
-     * Verteilt eine Anzahl Gegenstaende auf eine Liste von Raeumen. Die
-     * Zuteilung erfolgt auf Basis einer Zufallsstrategie.
-     *
-     * @param raum Liste der Raeume
+     * Fills the rooms randomly with items.
+     * @param rooms The given rooms.
      */
-    private void fillWithItems(ArrayList<Room> raum) {
+    private void fillWithItems(ArrayList<Room> rooms) {
         ArrayList<Item> gegenstand = new ArrayList<Item>();
         gegenstand.add(new Item("Sehr schwerer Laserpointer", 1));
         gegenstand.add(new Item("Beamer", 12));
@@ -158,16 +166,15 @@ public class Game {
         int counter = 0;
         while (gegenstand.size() > 0) {
             if (Math.random() > 0.5) {
-                raum.get(counter).InsertItem(gegenstand.get(0));
+                rooms.get(counter).InsertItem(gegenstand.get(0));
                 gegenstand.remove(0);
             }
-            counter = (counter + 1) % raum.size();
+            counter = (counter + 1) % rooms.size();
         }
     }
 
     /**
-     * Die Hauptmethode zum Spielen. Laeuft bis zum Ende des Spiels in einer
-     * Schleife.
+     * Writes the start text.
      */
     private void start() {
         writeDown("\n"
@@ -178,7 +185,7 @@ public class Game {
     }
 
     /**
-     *
+     * Writes the current locations long description.
      */
     public void look() {
         writeDown("Sie sind: " + player.GetName());
@@ -186,10 +193,8 @@ public class Game {
     }
     
     /**
-     * Packt den Gegenstand mit der gegebenen Nummer, falls vorhanden, in den
-     * Rucksack des Spielers und entfernt ihn aus dem aktuellen Raum.
-     *
-     * @param nr Nummer des Gegenstands
+     * Adds the given item to the inventory and removes it from the room.     *
+     * @param nr The index of the item.
      */
     public void takeItem(int nr) {
         Item gegenstand = currentLocation.RemoveItem(nr);
@@ -197,9 +202,9 @@ public class Game {
             writeDown("Es gibt keinen Gegenstand mit dieser Nummer: "
                     + nr);
         } else {
-            if (player.GetCapacity() >= calculateWeight(player.GetBackpack()) + gegenstand.GetWeight()) {
+            if (player.GetCapacity() >= calculateWeight(player.GetInventory()) + gegenstand.GetWeight()) {
                 writeDown("Gegenstand eingepackt: " + gegenstand.GetName());
-                player.GetBackpack().add(gegenstand);
+                player.GetInventory().add(gegenstand);
             } else {
                 writeDown("Gegenstand konnte nicht eingepackt werden, da er zu schwer ist.");
                 currentLocation.InsertItem(gegenstand);
@@ -208,29 +213,26 @@ public class Game {
     }
 
     /**
-     * Berechnet das Gewicht der Gegenstaende in dieser Liste
-     *
-     * @param rucksack Die Liste mit Gegenstaenden
-     * @return Das Gewicht der Gegenstaende
+     * Calculate the weight of the inventory.     *
+     * @param inventory The inventory.
+     * @return The weight of all the items in the inventory.
      */
-    private int calculateWeight(ArrayList<Item> rucksack) {
+    private int calculateWeight(ArrayList<Item> inventory) {
         int gewicht = 0;
-        for (Item gegenstand : rucksack) {
+        for (Item gegenstand : inventory) {
             gewicht += gegenstand.GetWeight();
         }
         return gewicht;
     }
 
     /**
-     * Uebernimmt, falls vorhanden, die Kontrolle der Person mit der
-     * spezifizierten Nummer.
-     *
-     * @param nummer Nummer der Person
+     * Change the person to control.
+     * @param number The index of the person.
      */
-    public void controlPerson(int nummer) {
-        Person person = currentLocation.Leave(nummer);
+    public void controlPerson(int number) {
+        Person person = currentLocation.Leave(number);
         if (person == null) {
-            writeDown("Es gibt keine Person mit Nummer " + nummer);
+            writeDown("Es gibt keine Person mit Nummer " + number);
         } else {
             currentLocation.Enter(player);
             player = person;
@@ -239,20 +241,11 @@ public class Game {
     }
     
     /**
-     * Versuche, in eine Richtung zu gehen. Wenn es einen Ausgang gibt, wechsele
-     * in den neuen Raum, ansonsten gib eine Fehlermeldung aus.
-     * @param richtung
+     * Change the room.
+     * @param direction The direction in which the room should be left.
      */
-    public void changeRoom(CardinalPoints richtung) {
-        /*if (!befehl.GotSecondWord()) {
-         // Gibt es kein zweites Wort, wissen wir nicht, wohin...
-         System.out.println("Wohin moechten Sie gehen?");
-         return;
-         }*/
-
-		//String richtung = befehl.GetSecondWord();
-        // Wir versuchen, den Raum zu verlassen.
-        Room naechsterRaum = currentLocation.GetExist(richtung);
+    public void changeRoom(CardinalPoints direction) {
+        Room naechsterRaum = currentLocation.GetExist(direction);
         if (naechsterRaum == null) {
             writeDown("Dort ist keine Tuer!");
         } else {
@@ -262,8 +255,8 @@ public class Game {
     }
 
     /**
-    *
-     * @param nr
+     * Kill the given person.
+     * @param nr The index of the person which should be killed.
     */
     public void killPerson(int nr) {
         Person person = currentLocation.GetPerson(nr);
@@ -315,14 +308,14 @@ public class Game {
     }   
     
     /**
-     *
-     * @param nr
+     * Take the given item as weapon.
+     * @param nr The index of the item to take as weapon.
      */
     public void takeAsWeapon(int nr) {
         try {            
-            Item item = player.RemoveBackpackItem(nr);
+            Item item = player.RemoveInventoryItem(nr);
             if (player.GetWeapon() != null) {
-                player.GetBackpack().add(player.GetWeapon());
+                player.GetInventory().add(player.GetWeapon());
                 writeDown("Der Gegenstand " + item.GetName() + " wurde aus deiner Hand entfernt und in deinen Rucksack gelegt.");
             }
             player.SetWeapon(item);
@@ -331,6 +324,5 @@ public class Game {
         } catch (Exception ex) {
             writeDown("Geben Sie die Nummer des Gegenstandes ein.");
         }
-
     }    
 }

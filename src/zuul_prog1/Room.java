@@ -6,206 +6,212 @@ import java.util.Set;
 import java.util.HashMap;
 
 /**
- * Diese Klasse modelliert Raeume in der Welt von Zuul.
- * 
- * Ein "Raum" repraesentiert einen Ort in der virtuellen Landschaft des
- * Spiels. Ein Raum ist mit anderen Raeumen ueber Ausgaenge verbunden.
- * Fuer jeden existierenden Ausgang haelt ein Raum eine Referenz auf 
- * den benachbarten Raum. In einem Raum koennen sich Personen und 
- * Gegenstaende befinden. 
- * 
- * @author  tebe (Original: Michael Koelling und David J. Barnes)
- * @version 1.0
+ * Creates the rooms for zuul.
+ *
+ * @author tebe (Original: Michael Koelling und David J. Barnes and Lucca Willi
+ * @version 1.1
  */
-
-class Room 
-{
+public class Room {
+    /**
+     * The discription of the room.
+     */
     private final String description;
+    
+    /**
+     * The image path for the picture of the room.
+     */
     private final URL imagePath;
+    
+    /**
+     * A list of all the person which are currently in this room.
+     */
     private final ArrayList<Person> persons = new ArrayList<Person>();
+    
+    /**
+     * A list of all the items which are currently in this room.
+     */
     private final ArrayList<Item> items = new ArrayList<Item>();
+    
+    /**
+     * A list of all the exists of this room.
+     */
     public final HashMap<CardinalPoints, Room> exits = new HashMap<CardinalPoints, Room>();
 
     /**
-     * Erzeuge einen Raum mit einer Beschreibung. Ein Raum
-     * hat anfangs keine Ausgaenge, Personen oder Gegenstaende.
-     * @param beschreibung enthaelt eine Beschreibung in der Form
-     *        "in einer Kueche" oder "auf einem Sportplatz".
+     * Creates the room
+     * @param beschreibung Contains the description of the room.
+     * @param imagePath The image path for the image.
      */
-    public Room(String beschreibung, URL imagePath) 
-    {
-        this.description = beschreibung; 
+    public Room(String beschreibung, URL imagePath) {
+        this.description = beschreibung;
         this.imagePath = imagePath;
     }
 
     /**
-     * Definiere einen Ausgang fuer diesen Raum.
-     * @param direction Die Richtung, in der der Ausgang liegen soll
-     * @param neighbor Der Raum, der ueber diesen Ausgang erreicht wird
+     * Adds a exit to the room.
+     * @param direction The direction in which the exit should be.
+     * @param neighbor The room to which the exit should lead.
      */
-    public void SetExit(CardinalPoints direction, Room neighbor) 
-    {
+    public void SetExit(CardinalPoints direction, Room neighbor) {
         exits.put(direction, neighbor);
         CardinalPoints againstDirection = CardinalPoints.North;
-        switch(direction){            
-            case North:                
+        switch (direction) {
+            case North:
                 againstDirection = CardinalPoints.South;
                 break;
-            case West:                
+            case West:
                 againstDirection = CardinalPoints.East;
                 break;
-            case East:                
+            case East:
                 againstDirection = CardinalPoints.West;
                 break;
         }
         neighbor.exits.put(againstDirection, this);
     }
-    
 
     /**
-     * Die Person betritt den Raum und wird fortan als im Raum
-     * befindlich gelistet.
-     * @param person Person, welche den Raum betritt
+     * Adds a person to the room.
+     * @param person The person which should be added.
      */
-    public void Enter(Person person) 
-    {
+    public void Enter(Person person) {
         this.persons.add(person);
     }
-    
+
     /**
-     * Die Person mit der angegebenen Nummer wird aus dem Raum entfernt 
-     * und wird fortan nicht mehr als im Raum befindlich gelistet.
-     * Falls eine Person mit dieser Nummer nicht existiert, wird 'null' 
-     * zurueckgegeben.
-     * @param nummer Nummer der Person
-     * @return Person, die den Raum verlassen hat
+     * Removes the person with the index number from the room.
+     * @param number The index number of the person.
+     * @return The person which will be removed.
      */
-    public Person Leave(int nummer) 
-    {
-    	boolean ungueltigerIndex = persons.isEmpty() || 
-    			nummer > persons.size()-1 || nummer < 0;
-        return ungueltigerIndex ? null : persons.remove(nummer);
+    public Person Leave(int number) {
+        boolean ungueltigerIndex = persons.isEmpty()
+                || number > persons.size() - 1 || number < 0;
+        return ungueltigerIndex ? null : persons.remove(number);
     }
-    
-    public Person GetPerson(int nummer){
-        boolean ungueltigerIndex = persons.isEmpty() || 
-    			nummer > persons.size()-1 || nummer < 0;
-        return ungueltigerIndex ? null : persons.get(nummer);
+
+    /**
+     * Gets the person with the index number from the room.
+     * @param number The index number of the person.
+     * @return The person with the given index.
+     */
+    public Person GetPerson(int number) {
+        boolean ungueltigerIndex = persons.isEmpty()
+                || number > persons.size() - 1 || number < 0;
+        return ungueltigerIndex ? null : persons.get(number);
     }
-    
-    public ArrayList<Person> GetPersons(){
+
+    /**
+     * Gets all persons in the room.
+     * @return A arraylist, containing all the persons of the room. 
+     */
+    public ArrayList<Person> GetPersons() {
         return persons;
     }
-    
-     public ArrayList<Item> GetItems(){
+
+    /**
+     * Gets all items of the room.
+     * @return A arraylist, containing all the items of the room.
+     */
+    public ArrayList<Item> GetItems() {
         return items;
     }
-    
+
     /**
-     * Der Gegenstand wird in den Raum gelegt und wird fortan als im
-     * Raum befindlich gelistet. 
-     * @param gegenstand Gegenstand, welcher in den Raum gelegt wird
+     * Adds a item to the room
+     * @param item The item wich should be added.
      */
-    public void InsertItem(Item gegenstand) 
-    {
-        this.items.add(gegenstand);
-    }   
-    
-    /**
-     * Der Gegenstand mit der angegebenen Nummer wird aus dem Raum entfernt 
-     * und wird fortan nicht mehr als im Raum befindlich gelistet.
-     * Falls ein Gegenstand mit dieser Nummer nicht existiert, wird 'null' 
-     * zurueckgegeben.
-     * @param nummer Nummer des Gegenstands
-     * @return Gegenstand, der herausgenommen wurde
-     */
-    public Item RemoveItem(int nummer) 
-    {
-    	boolean ungueltigerIndex = items.isEmpty() || 
-    			nummer > items.size()-1 || nummer < 0;
-        return ungueltigerIndex ? null : items.remove(nummer);
+    public void InsertItem(Item item) {
+        this.items.add(item);
     }
-    
+
     /**
-     * @return Die kurze Beschreibung dieses Raums (die dem Konstruktor
-     * uebergeben wurde).
+     * Removes the item with the index number from the room.
+     * @param number The index of the item.
+     * @return The item with the given index.
      */
-    public String GetDescription()
-    {
+    public Item RemoveItem(int number) {
+        boolean ungueltigerIndex = items.isEmpty()
+                || number > items.size() - 1 || number < 0;
+        return ungueltigerIndex ? null : items.remove(number);
+    }
+
+    /**
+     * Gets the description of the room.
+     * @return The description.
+     */
+    public String GetDescription() {
         return description;
     }
 
     /**
-     * Liefere eine lange Beschreibung dieses Raums, inkl.
-     * Beschreibung des Rauminhaltes (Gegenstaende, Personen,...).
-     * @return eine lange Beschreibung dieses Raumes.
+     * Gets the long (better formated) description.
+     * @return The long description.
      */
-    public String GetLongDescription()
-    {
-        return description + ".\n" 
-        		+ getExistsAsString()
-        		+ getItemsAsString()
-        	    + getPersonsAsString();
-    }
-
-    private String getItemsAsString() {
-    	String text = "Keine Gegenstaende im Raum.\n";
-    	if(items.size()>0) {
-	    	int counter = 0;
-	    	text = "Gegenstaende im Raum:\n";
-	    	for( Item objekt : items) {
-	    		text += " " + counter++ + ": " + objekt.GetName() + "\n";
-	    	}
-    	}
-    	return text;
-    }
-
-    private String getPersonsAsString() {
-		String text = "Keine Personen im Raum.\n";
-    	if(persons.size()>0){
-    		text="Personen im Raum:\n";
-        	int counter = 0;
-        	for( Person objekt : persons) {
-        		text += " " + counter++ + ": " + objekt.GetName() + "\n";
-        	}
-    	}    	
-    	return text;
+    public String GetLongDescription() {
+        return description + ".\n"
+                + getExistsAsString()
+                + getItemsAsString()
+                + getPersonsAsString();
     }
 
     /**
-     * Liefere eine Zeichenkette, die die Ausgaenge dieses Raums
-     * beschreibt, beispielsweise
-     * "Ausgaenge: north west".
-     * @return eine Beschreibung der Ausgaenge dieses Raumes.
+     * Gets the items as a string list.
+     * @return The items as a formated string.
      */
-    private String getExistsAsString()
-    {
+    private String getItemsAsString() {
+        String text = "Keine Gegenstaende im Raum.\n";
+        if (items.size() > 0) {
+            int counter = 0;
+            text = "Gegenstaende im Raum:\n";
+            for (Item objekt : items) {
+                text += " " + counter++ + ": " + objekt.GetName() + "\n";
+            }
+        }
+        return text;
+    }
+
+    /**
+     * Gets the persons as a string list.
+     * @return The persons as a formated string.
+     */
+    private String getPersonsAsString() {
+        String text = "Keine Personen im Raum.\n";
+        if (persons.size() > 0) {
+            text = "Personen im Raum:\n";
+            int counter = 0;
+            for (Person objekt : persons) {
+                text += " " + counter++ + ": " + objekt.GetName() + "\n";
+            }
+        }
+        return text;
+    }
+
+    /**
+     * Gets the exits as a string list.
+     * @return The exits as a formated string.
+     */
+    private String getExistsAsString() {
         String ergebnis = "Ausgaenge: ";
         Set<CardinalPoints> keys = exits.keySet();
-        for(CardinalPoints ausgang : keys)
-            ergebnis += ausgang + ", " ;
+        for (CardinalPoints ausgang : keys) {
+            ergebnis += ausgang + ", ";
+        }
         return ergebnis + "\n";
     }
 
     /**
-     * Liefere den Raum, den wir erreichen, wenn wir aus diesem Raum
-     * in die angegebene Richtung gehen. Liefere 'null', wenn in
-     * dieser Richtung kein Ausgang ist.
-     * @param richtung die Richtung, in die gegangen werden soll.
-     * @return den Raum in der angegebenen Richtung.
-     */
-    public Room GetExist(CardinalPoints richtung) 
-    {
-        return exits.get(richtung);
-    }
-    
-    /**
-     * 
+     * Gets the exit in the given direction.
+     * @param direction The direction the exist lies.
      * @return 
+     */
+    public Room GetExist(CardinalPoints direction) {
+        return exits.get(direction);
+    }
+
+    /**
+     * Gets the image path of the room.
+     * @return The image path as url.
      */
     public URL GetImagePath() {
         return imagePath;
     }
-        
 }
-

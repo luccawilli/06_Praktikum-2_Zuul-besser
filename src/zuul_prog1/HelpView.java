@@ -1,7 +1,8 @@
 package zuul_prog1;
 
 /**
- *  The help view of the view, which show usefull information
+ * The help view of the view, which show usefull informations.
+ * @author Lucca Willi
  */
 public class HelpView extends javax.swing.JFrame {
 
@@ -21,6 +22,7 @@ public class HelpView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         helpTextArea = new javax.swing.JTextArea();
@@ -34,6 +36,7 @@ public class HelpView extends javax.swing.JFrame {
         helpTextArea.setRows(5);
         jScrollPane1.setViewportView(helpTextArea);
 
+        buttonGroup.add(generalButton);
         generalButton.setText("Allgemeines");
         generalButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -41,6 +44,7 @@ public class HelpView extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup.add(functionButton);
         functionButton.setText("Funktionen");
         functionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,14 +95,15 @@ public class HelpView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * the general button action performed event
+     * The general button action performed event
      */
     private void generalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generalButtonActionPerformed
         helpTextArea.setText("Das ist Zuul; \nEin langweiliges Spiel, \nwelches für den Programmieren Kurs 1 \nin der ZHAW programmiert wurde.");
+        
     }//GEN-LAST:event_generalButtonActionPerformed
 
     /**
-     * the function button action performed event, which shows functional information.
+     * The function button action performed event, which shows functional information.
      */
     private void functionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_functionButtonActionPerformed
         String text = "Allgemein:";
@@ -140,6 +145,7 @@ public class HelpView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JToggleButton functionButton;
     private javax.swing.JToggleButton generalButton;
     private javax.swing.JTextArea helpTextArea;

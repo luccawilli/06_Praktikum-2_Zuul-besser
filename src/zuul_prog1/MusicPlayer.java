@@ -1,13 +1,6 @@
-/*
- * Source https://stackoverflow.com/questions/4875080/music-loop-in-java
- */
 package zuul_prog1;
 
 import java.io.*;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -18,14 +11,16 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
- * class to play sounds and musik 
+ * Class to play sounds and music.
+ * @author Lucca Willi and see Source
+ * @source https://stackoverflow.com/questions/4875080/music-loop-in-java
  */
 public class MusicPlayer extends Thread {
  
     private Clip musicPlay;
     
     /**
-     * start to play the musik
+     * Start to play the musik
      */
     public void run() {
         try {
@@ -36,7 +31,8 @@ public class MusicPlayer extends Thread {
     }
 
     /**
-     * loads the musik and plays it in a loop
+     * Loads the musik and plays it in a loop.
+     * Has to been enclosed in a try catch.
      */
     public void startPlayback() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
         if(musicPlay == null){
@@ -62,7 +58,7 @@ public class MusicPlayer extends Thread {
     }
     
     /**
-     * stops the musik loop
+     * Stops the music loop.
      */
     public void stopPlayback(){
         if(musicPlay != null && musicPlay.isActive()){
