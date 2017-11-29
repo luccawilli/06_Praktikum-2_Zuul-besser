@@ -48,7 +48,7 @@ public class Game {
 
     /**
      * Creates the game.
-     * @param actionListener The action listener.
+     * @param actionListener The action listener, for overriding the events.
      */
     public Game(IGame actionListener) {
         listeners.add(actionListener);
@@ -86,7 +86,7 @@ public class Game {
      * And fills the rooms, items and the people into it.
      */
     private void generateWorld() {
-        player = new Person("Captain Kirk", 220, 10, 100, null, 83, getClass().getResource("pictures/personCaptainKrikPicture.jpg"));
+        player = new Person("Captain Kirk", 220, 150, 100, null, 83, getClass().getResource("pictures/personCaptainKrikPicture.jpg"));
         ArrayList<Room> raeume = createRooms();
         fillWithPersons(raeume);
         fillWithItems(raeume);
@@ -279,7 +279,7 @@ public class Game {
             int deathMatch = gen.nextInt(2);
             if(deathMatch == 1){
                 writeDown += "\nDu hast " + person.GetName() + " zu häufig geschlagen!! \n Das gibt einen Death-Match!!";
-                while(person.GetLifePoints() > 0 || player.GetLifePoints() > 0){
+                while(person.GetLifePoints() > 0 && player.GetLifePoints() > 0){
                     player.SetLifePoints(player.GetLifePoints() - person.GetDamage());
                     writeDown += "\nDu hast " + person.GetDamage() + " kassiert!";
                     if(player.GetLifePoints() <= 0){                        
@@ -288,7 +288,7 @@ public class Game {
                         break;
                     }
                     person.SetLifePoints(person.GetLifePoints() - player.GetDamage());
-                    writeDown += "\n" + person.GetName() + " hast " + person.GetDamage() + " kassiert!";
+                    writeDown += "\n" + person.GetName() + " hat " + player.GetDamage() + " kassiert!";
                 }                
                 
             }
@@ -321,6 +321,21 @@ public class Game {
             player.SetWeapon(item);
             writeDown("Der Gegenstand " + item.GetName() + " ist nun deine Waffe! \n"
                     + "Er erhöht deinen Schaden um " + item.GetDamage());
+        } catch (Exception ex) {
+            writeDown("Geben Sie die Nummer des Gegenstandes ein.");
+        }
+    }    
+    
+    /**
+     * Remove the item from the weapon-slot.     
+     */
+    public void removeAsWeapon() {
+        try {
+            if (player.GetWeapon() != null) {
+                player.GetInventory().add(player.GetWeapon());
+                writeDown("Der Gegenstand " + player.GetWeapon().GetName() + " wurde aus deiner Hand entfernt und in deinen Rucksack gelegt.");
+                player.SetWeapon(null);
+            }
         } catch (Exception ex) {
             writeDown("Geben Sie die Nummer des Gegenstandes ein.");
         }

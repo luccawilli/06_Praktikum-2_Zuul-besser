@@ -144,6 +144,7 @@ public class Person {
 
     /**
      * Sets the weapon of the person
+     * @param newWeapon The new weapon.
      */
     public void SetWeapon(Item newWeapon) {
         weapon = newWeapon;

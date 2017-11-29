@@ -93,14 +93,26 @@ public class View extends javax.swing.JFrame implements IGame {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.setPreferredSize(new java.awt.Dimension(340, 540));
+
+        jScrollPane3.setPreferredSize(new java.awt.Dimension(315, 120));
 
         DefaultListModel personsListModel = new DefaultListModel();
         itemsList.setModel(personsListModel);
-        personsList.setPreferredSize(new java.awt.Dimension(200, 100));
+        personsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        personsList.setToolTipText("");
+        personsList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        personsList.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
         jScrollPane3.setViewportView(personsList);
 
+        jScrollPane4.setAutoscrolls(true);
+        jScrollPane4.setPreferredSize(new java.awt.Dimension(315, 120));
+
         itemsList.setModel(new DefaultListModel());
-        itemsList.setPreferredSize(new java.awt.Dimension(200, 100));
+        itemsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        itemsList.setToolTipText("");
+        itemsList.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
+        itemsList.setMinimumSize(new java.awt.Dimension(320, 0));
         jScrollPane4.setViewportView(itemsList);
 
         jLabel1.setText("Gegenstände:");
@@ -108,7 +120,7 @@ public class View extends javax.swing.JFrame implements IGame {
         jLabel2.setText("Personen:");
 
         panelRoomPictureBoxPlaceholder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        panelRoomPictureBoxPlaceholder.setPreferredSize(new java.awt.Dimension(320, 200));
+        panelRoomPictureBoxPlaceholder.setPreferredSize(new java.awt.Dimension(320, 170));
         panelRoomPictureBoxPlaceholder.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 panelRoomPictureBoxPlaceholderMouseClicked(evt);
@@ -119,11 +131,11 @@ public class View extends javax.swing.JFrame implements IGame {
         panelRoomPictureBoxPlaceholder.setLayout(panelRoomPictureBoxPlaceholderLayout);
         panelRoomPictureBoxPlaceholderLayout.setHorizontalGroup(
             panelRoomPictureBoxPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 312, Short.MAX_VALUE)
         );
         panelRoomPictureBoxPlaceholderLayout.setVerticalGroup(
             panelRoomPictureBoxPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 171, Short.MAX_VALUE)
+            .addGap(0, 168, Short.MAX_VALUE)
         );
 
         jLabel6.setText("Raum:");
@@ -134,16 +146,16 @@ public class View extends javax.swing.JFrame implements IGame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelRoomPictureBoxPlaceholder, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(roomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panelRoomPictureBoxPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -154,11 +166,11 @@ public class View extends javax.swing.JFrame implements IGame {
                     .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(roomLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelRoomPictureBoxPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                .addComponent(panelRoomPictureBoxPlaceholder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -173,7 +185,11 @@ public class View extends javax.swing.JFrame implements IGame {
         jPanel4.setMinimumSize(new java.awt.Dimension(322, 530));
 
         itemsList.setModel(new DefaultListModel());
-        inventoryList.setPreferredSize(new java.awt.Dimension(200, 100));
+        inventoryList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        inventoryList.setToolTipText("");
+        inventoryList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        inventoryList.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
+        inventoryList.setPreferredSize(new java.awt.Dimension(200, 120));
         jScrollPane1.setViewportView(inventoryList);
 
         jLabel5.setText("Inventar:");
@@ -234,7 +250,7 @@ public class View extends javax.swing.JFrame implements IGame {
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(southButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(northButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(0, 2, Short.MAX_VALUE))
+                        .addGap(0, 20, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(restartButton)))
@@ -358,7 +374,7 @@ public class View extends javax.swing.JFrame implements IGame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 300, Short.MAX_VALUE))
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 318, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -372,7 +388,7 @@ public class View extends javax.swing.JFrame implements IGame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         outputArea.setEditable(false);
@@ -401,8 +417,8 @@ public class View extends javax.swing.JFrame implements IGame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -410,9 +426,9 @@ public class View extends javax.swing.JFrame implements IGame {
                 .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(jPanel3, 560, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jPanel3, jPanel4});
@@ -595,7 +611,7 @@ public class View extends javax.swing.JFrame implements IGame {
         
         roomLabel.setText(game.currentLocation.GetDescription());
         
-        SetBackgroundPicture(panelRoomPictureBoxPlaceholder, game.currentLocation.GetImagePath(), 330, 200);
+        SetBackgroundPicture(panelRoomPictureBoxPlaceholder, game.currentLocation.GetImagePath(), 314, 200);
     }
     
     /**
@@ -754,7 +770,14 @@ public class View extends javax.swing.JFrame implements IGame {
                     }                 
                 }
             });
-        itemsActionsDict.put("Waffe", new AbstractAction("takeAsWeapon") {
+        itemsActionsDict.put("Waffe ablegen", new AbstractAction("RemoveWeapon") {
+                public void actionPerformed(ActionEvent e) {
+                    game.removeAsWeapon();
+                    UpdateInventory();
+                    UpdatePlayer();                    
+                }
+            });
+        itemsActionsDict.put("Waffe anlegen", new AbstractAction("takeAsWeapon") {
                 public void actionPerformed(ActionEvent e) {
                     JMenuItem a = ((JMenuItem) e.getSource());
                     int i = inventoryList.getSelectedIndex();
@@ -764,7 +787,7 @@ public class View extends javax.swing.JFrame implements IGame {
                         UpdatePlayer();
                     }                    
                 }
-            });
+            });        
         popup = new JPopupMenu();        
         for(String iA : itemsActionsDict.keySet()){
             JMenuItem a = new JMenuItem(itemsActionsDict.get(iA));
