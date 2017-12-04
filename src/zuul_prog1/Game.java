@@ -177,10 +177,9 @@ public class Game {
      * Writes the start text.
      */
     private void start() {
-        writeDown("\n"
-        +"Willkommen zu Zuul! \n"
-        +"Zuul ist ein neues, unglaublich langweiliges Spiel. \n"
-        +"\n"
+        writeDown("Willkommen zu Zuul! "
+        +"\n Zuul ist ein neues, unglaublich langweiliges Spiel."
+        +"\n\n"
         +currentLocation.GetLongDescription());
     }
 
@@ -188,8 +187,7 @@ public class Game {
      * Writes the current locations long description.
      */
     public void look() {
-        writeDown("Sie sind: " + player.GetName());
-        writeDown(currentLocation.GetLongDescription());
+        writeDown("Sie sind: " + player.GetName() + "\n" + currentLocation.GetLongDescription());
     }
     
     /**
@@ -202,7 +200,7 @@ public class Game {
             writeDown("Es gibt keinen Gegenstand mit dieser Nummer: "
                     + nr);
         } else {
-            if (player.GetCapacity() >= calculateWeight(player.GetInventory()) + gegenstand.GetWeight()) {
+            if (player.GetCapacity() >= calculateWeight(player) + gegenstand.GetWeight()) {
                 writeDown("Gegenstand eingepackt: " + gegenstand.GetName());
                 player.GetInventory().add(gegenstand);
             } else {
@@ -214,13 +212,17 @@ public class Game {
 
     /**
      * Calculate the weight of the inventory.     *
-     * @param inventory The inventory.
+     * @param person The person which inventory we want to weight.
      * @return The weight of all the items in the inventory.
      */
-    private int calculateWeight(ArrayList<Item> inventory) {
-        int gewicht = 0;
-        for (Item gegenstand : inventory) {
+    private int calculateWeight(Person person) {
+        int gewicht = 0;        
+        for (Item gegenstand : person.GetInventory()) {
             gewicht += gegenstand.GetWeight();
+        }
+        Item item = person.GetWeapon();
+        if(item != null){
+            gewicht += item.GetWeight();
         }
         return gewicht;
     }

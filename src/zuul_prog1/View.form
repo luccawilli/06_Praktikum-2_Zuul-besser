@@ -562,6 +562,9 @@
                       <Dimension value="[100, 120]"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="panelPlayerPictureBoxPlaceholderMouseClicked"/>
+                  </Events>
 
                   <Layout>
                     <DimensionLayout dim="0">

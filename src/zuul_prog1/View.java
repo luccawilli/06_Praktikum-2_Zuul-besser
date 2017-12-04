@@ -281,6 +281,11 @@ public class View extends javax.swing.JFrame implements IGame {
 
         panelPlayerPictureBoxPlaceholder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelPlayerPictureBoxPlaceholder.setPreferredSize(new java.awt.Dimension(100, 120));
+        panelPlayerPictureBoxPlaceholder.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelPlayerPictureBoxPlaceholderMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelPlayerPictureBoxPlaceholderLayout = new javax.swing.GroupLayout(panelPlayerPictureBoxPlaceholder);
         panelPlayerPictureBoxPlaceholder.setLayout(panelPlayerPictureBoxPlaceholderLayout);
@@ -562,6 +567,15 @@ public class View extends javax.swing.JFrame implements IGame {
             }
         }
     }//GEN-LAST:event_muteSoundMenuItemActionPerformed
+
+    /**
+     * Handles the button room placeholder action performed event.
+     */
+    private void panelPlayerPictureBoxPlaceholderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelPlayerPictureBoxPlaceholderMouseClicked
+        if(evt.getButton() == 1){//left mouse button
+           game.look();
+        }
+    }//GEN-LAST:event_panelPlayerPictureBoxPlaceholderMouseClicked
 
     /**
      * Overrides the write down event from the igame interface.

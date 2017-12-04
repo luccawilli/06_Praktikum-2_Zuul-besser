@@ -11,6 +11,7 @@ public class HelpView extends javax.swing.JFrame {
      */
     public HelpView() {
         initComponents();
+        generalButton.doClick();
     }
 
     /**
@@ -28,6 +29,7 @@ public class HelpView extends javax.swing.JFrame {
         helpTextArea = new javax.swing.JTextArea();
         generalButton = new javax.swing.JToggleButton();
         functionButton = new javax.swing.JToggleButton();
+        playerButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hilfe");
@@ -52,6 +54,14 @@ public class HelpView extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup.add(playerButton);
+        playerButton.setText("Spieler");
+        playerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playerButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -60,7 +70,9 @@ public class HelpView extends javax.swing.JFrame {
                 .addComponent(generalButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(functionButton)
-                .addGap(0, 200, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(playerButton)
+                .addGap(0, 299, Short.MAX_VALUE))
             .addComponent(jScrollPane1)
         );
         jPanel1Layout.setVerticalGroup(
@@ -68,9 +80,10 @@ public class HelpView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(generalButton)
-                    .addComponent(functionButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(functionButton)
+                    .addComponent(playerButton))
+                .addGap(17, 17, 17)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -98,8 +111,7 @@ public class HelpView extends javax.swing.JFrame {
      * The general button action performed event
      */
     private void generalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generalButtonActionPerformed
-        helpTextArea.setText("Das ist Zuul; \nEin langweiliges Spiel, \nwelches für den Programmieren Kurs 1 \nin der ZHAW programmiert wurde.");
-        
+        helpTextArea.setText("Das ist Zuul; \nEin langweiliges Spiel, welches für den Programmieren Kurs 1 \nin der ZHAW programmiert wurde.");        
     }//GEN-LAST:event_generalButtonActionPerformed
 
     /**
@@ -107,9 +119,49 @@ public class HelpView extends javax.swing.JFrame {
      */
     private void functionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_functionButtonActionPerformed
         String text = "Allgemein:";
-        
+        text += "\n Die meisten Funktionen finden sich im Kontextmenu der Listen:"
+                + "\n\n - Inventar"
+                + "\n -- Waffe an und ablegen"
+                + "\n --- Verschiebt den Gegenstand in den Waffenslot bzw. zurück ins Inventar."
+                + "\n -- Gegenstand ablegen"
+                + "\n --- Verschiebt den Gegenstand in den Raum."
+                + "\n\n - Personen"
+                + "\n -- Übernehmen"
+                + "\n --- Übernimmt die Rolle der ausgewählten Person."
+                + "\n -- Töten"
+                + "\n --- Fügt der ausgewählten Person schaden zu."
+                + "\n\n - Gegenstände"
+                + "\n -- Nehmen"
+                + "\n --- Verschiebt den Gegenstand vom Raum ins Inventar."
+                + "\n\n Sonstiges:"
+                + "\n Wenn man auf das Raumbild oder das Spielerportrait klickt, wird eine Beschriebung ausgegeben."
+                + "\n Die Hintergrundmusik kann im Menupanel 'Info' ein- und ausgeschalten werden."
+                + "\n\n Navigation:"
+                + "\n Um sich in der kleinen Welt von Zuul bewegen zu können gibt es vier Richtungstasten."
+                + "\n Norden, Osten, Süden und Westen"
+                + "\n Je nach dem ob ein Weg existiert sind die Tasten eingeschalten oder ausgegraut."
+                + "\n\n Restart:"
+                + "\n Falls der Spieler getötet wird, kann man unten den Navigationstasten auf Restart klicken, um eine neue Runde zu beginnen.";
         helpTextArea.setText(text);
     }//GEN-LAST:event_functionButtonActionPerformed
+
+    /**
+     * The function button action performed event, which shows information about the player.
+     */
+    private void playerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerButtonActionPerformed
+        String text = "Der Spieler besitzt einige Attribute:";
+        text += "\n - Name"
+                + "\n -- Der Name der Person."
+                + "\n\n - Tragkraft"
+                + "\n -- Das Gewicht der Gegenstände, die die Person im Inventar tragen kann."
+                + "\n\n - Schaden"
+                + "\n -- Der Schaden den die Person ausrichten kann."
+                + "\n\n - Waffe"
+                + "\n -- Die Waffe welche die Person trägt, natrülich nur wenn sie eine ausgewählt hat."
+                + "\n\n - Lebenspunkte"
+                + "\n -- Die Lebenspunkte, welche wiedergeben wie viel Schaden eine Person aushalten kann, bevor sie stirbt.";
+        helpTextArea.setText(text);
+    }//GEN-LAST:event_playerButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -151,5 +203,6 @@ public class HelpView extends javax.swing.JFrame {
     private javax.swing.JTextArea helpTextArea;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToggleButton playerButton;
     // End of variables declaration//GEN-END:variables
 }
