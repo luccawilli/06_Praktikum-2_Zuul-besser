@@ -5,7 +5,10 @@
  */
 package zuul_prog1;
 
+import junit.framework.Test;
 import junit.framework.TestCase;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 /**
  *
@@ -17,6 +20,21 @@ public class ItemTest extends TestCase {
         super(testName);
     }
 
+  
+    /**
+     * Test of the initing of an item.
+     */
+
+    public void testInitItem() {
+        try{
+            System.out.println("InitItem");       
+            Item instance = new Item("Hallo", 0);
+            failSame("Gegenstandsdefinition ist ungueltig.");
+        }
+        catch(IllegalArgumentException ex){
+        }
+    }
+    
     /**
      * Test of GetName method, of class Item.
      */
